@@ -44,8 +44,24 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 
 }
 ```
-
-
+config example
+```
+jdempotent:
+  cryptography:
+    algorithm: MD5
+  cache:
+    redis:
+      password: "nEx-ya5-sso-ecomm"
+      sentinelHostList: 10.250.217.172,10.250.217.173,10.250.217.174
+      sentinelPort: "26379"
+      sentinelMasterName: "ecomcore"
+      expirationTimeHour: 2
+      dialTimeoutSecond: 3
+      readTimeoutSecond: 3
+      writeTimeoutSecond: 3
+      maxRetryCount: 3
+      expireTimeoutHour: 3
+```
 
 #shortcut implementation
 

@@ -17,8 +17,8 @@
     <modules>
         <module>Jdempotent-core</module>
         <module>Jdempotent-spring-boot-redis-starter</module>
-
     </modules>
+    
     <build>
         <pluginManagement>
             <plugins>
