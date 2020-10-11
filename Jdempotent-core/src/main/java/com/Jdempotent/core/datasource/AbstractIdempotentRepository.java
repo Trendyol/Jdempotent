@@ -9,7 +9,6 @@ import java.util.Map;
 
 /**
  * Includes all the methods of IdempotentRequestStore
- *
  */
 public abstract class AbstractIdempotentRepository implements IdempotentRepository {
 
@@ -45,7 +44,6 @@ public abstract class AbstractIdempotentRepository implements IdempotentReposito
 
 
     /**
-     *
      * @return
      */
     protected abstract Map<IdempotencyKey, IdempotentRequestResponseWrapper> getMap();

@@ -1,6 +1,5 @@
-package com.Jdempotent.core.datasource.impl;
+package com.Jdempotent.core.datasource;
 
-import com.Jdempotent.core.datasource.AbstractIdempotentRepository;
 import com.Jdempotent.core.model.IdempotencyKey;
 import com.Jdempotent.core.model.IdempotentRequestResponseWrapper;
 
@@ -8,10 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
  * An implementation of the idempotent AbstractIdempotentRepository
  * that uses as a default map
- *
  */
 public class InMemoryIdempotentRepository extends AbstractIdempotentRepository {
 

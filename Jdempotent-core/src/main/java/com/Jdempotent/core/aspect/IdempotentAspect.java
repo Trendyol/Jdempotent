@@ -6,7 +6,7 @@ import com.Jdempotent.core.callback.ErrorConditionalCallback;
 import com.Jdempotent.core.constant.CryptographyAlgorithm;
 import com.Jdempotent.core.constant.EnvironmentVariableUtils;
 import com.Jdempotent.core.datasource.IdempotentRepository;
-import com.Jdempotent.core.datasource.impl.InMemoryIdempotentRepository;
+import com.Jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.Jdempotent.core.model.IdempotencyKey;
 import com.Jdempotent.core.model.IdempotentRequestWrapper;
 import com.Jdempotent.core.model.IdempotentResponseWrapper;
