@@ -16,13 +16,23 @@
 Make your listener or etc idempotent easily
 
 # Usage
+new dependecy
 
 ```xml
-<dependency>
-   <groupId>com.trendyol.jidempotent</groupId>
-   <artifactId>jidempotent-spring-boot-starter</artifactId>
-   <version>0.0.17-SNAPSHOT</version>
-</dependency>
+    <dependency>
+        <groupId>com.trendyol</groupId>
+        <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
+        <version>0.8.0</version>
+    </dependency>
+```
+
+old dependecy:
+```xml
+    <dependency>
+       <groupId>com.trendyol.jidempotent</groupId>
+       <artifactId>jidempotent-spring-boot-starter</artifactId>
+       <version>0.0.17-SNAPSHOT</version>
+    </dependency>
 ```
 
 You dont need anything, just add dependecy and have fun.
