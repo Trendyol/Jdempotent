@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Jdempotent.iml" filepath="$PROJECT_DIR$/Jdempotent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Jdempotent-core/Jdempotent-core.iml" filepath="$PROJECT_DIR$/Jdempotent-core/Jdempotent-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Jdempotent-spring-boot-redis-starter/Jdempotent-spring-boot-redis-starter.iml" filepath="$PROJECT_DIR$/Jdempotent-spring-boot-redis-starter/Jdempotent-spring-boot-redis-starter.iml" />
+    </modules>
+  </component>
+</project>
