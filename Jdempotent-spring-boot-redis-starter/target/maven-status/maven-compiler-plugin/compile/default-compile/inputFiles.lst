@@ -1,1 +1,4 @@
-/Users/mehmet.ari/Documents/codes/memojja@github/Jdempotent/Jdempotent-spring-boot-redis-starter/src/main/java/com/javadevjournal/App.java
+/Users/mehmet.ari/Documents/codes/memojja@github/Jdempotent/Jdempotent-spring-boot-redis-starter/src/main/java/com/Jdempotent/redis/RedisIdempotentRepository.java
+/Users/mehmet.ari/Documents/codes/memojja@github/Jdempotent/Jdempotent-spring-boot-redis-starter/src/main/java/com/Jdempotent/redis/RedisSentinelConfiguration.java
+/Users/mehmet.ari/Documents/codes/memojja@github/Jdempotent/Jdempotent-spring-boot-redis-starter/src/main/java/com/Jdempotent/redis/RedisConfigProperties.java
+/Users/mehmet.ari/Documents/codes/memojja@github/Jdempotent/Jdempotent-spring-boot-redis-starter/src/main/java/com/Jdempotent/redis/ApplicationConfig.java
