@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.Jdempotent.redis.ApplicationConfig,\
+com.Jdempotent.core.datasource.impl.redis.RedisConfigProperties,\
+com.Jdempotent.core.datasource.impl.redis.RedisSentinelConfiguration
