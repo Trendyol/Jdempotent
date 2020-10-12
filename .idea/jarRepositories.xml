@@ -16,5 +16,10 @@
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="trendyol-maven-release" />
+      <option name="name" value="trendyol-maven-release" />
+      <option name="url" value="http://sfrontregistry.trendyol.com:8081/repository/maven-releases/" />
+    </remote-repository>
   </component>
 </project>
