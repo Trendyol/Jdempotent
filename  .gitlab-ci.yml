@@ -50,5 +50,6 @@ Build:
   tags:
     - build
   script:
-    - mvn versions:set -DnewVersion=$VERSION
+    - java -version
+    #- mvn versions:set -DnewVersion=$VERSION
     - mvn -s settings.xml clean deploy -DskipTests=true
