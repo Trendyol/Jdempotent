@@ -1,4 +1,0 @@
-com/Jdempotent/redis/RedisSentinelConfiguration.class
-com/Jdempotent/redis/ApplicationConfig.class
-com/Jdempotent/redis/RedisConfigProperties.class
-com/Jdempotent/redis/RedisIdempotentRepository.class
