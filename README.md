@@ -109,3 +109,15 @@ public @interface IdempotentRabbitListener {
 }
 
 ```
+TODOS
+<ol>
+<li>Consumer projelerinde exceptional caselerin çıkarılması jira : https://jtracker.trendyol.com/browse/CUS-1445</li>
+<li>UT,IT testlerinin yazılması</li>
+<li>disable request&response config</li>
+<li>algoritma tipinin configden okunması</li>
+<li>java doc update edilmesi</li>
+<li>readme update edilmesi</li>
+<li>examples altına örnek proje yapılması</li>
+<li>Jdempotent-spring-boot-redis-starter yazılması</li>
+<li>yük testi</li>
+</ol>
