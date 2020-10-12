@@ -24,9 +24,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 /**
- *
  * An aspect that used along with the @IdempotentResource annotation
- *
  */
 @Aspect
 public class IdempotentAspect {
@@ -119,7 +117,7 @@ public class IdempotentAspect {
         try {
             result = pjp.proceed();
         } catch (Exception e) {
-            logger.debug(classAndMethodName + "deleted from cache with {} . Exception : {}", idempotencyKey,e);
+            logger.debug(classAndMethodName + "deleted from cache with {} . Exception : {}", idempotencyKey, e);
             idempotentRepository.remove(idempotencyKey);
             throw e;
         }
@@ -152,7 +150,6 @@ public class IdempotentAspect {
     }
 
     /**
-     *
      * Retrieve response from cache
      *
      * @param key
@@ -210,7 +207,6 @@ public class IdempotentAspect {
     }
 
     /**
-     *
      * Generates a idempotent key for incoming event
      *
      * @param requestObject
