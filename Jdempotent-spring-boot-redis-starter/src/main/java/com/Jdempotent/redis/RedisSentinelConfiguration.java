@@ -4,6 +4,7 @@ package com.Jdempotent.redis;
 import com.Jdempotent.core.model.IdempotentResponseWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConfiguration;
@@ -15,6 +16,10 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
  *
  */
 @Configuration
+@ConditionalOnProperty(
+        value = "jdempotent.enable",
+        havingValue = "true",
+        matchIfMissing = true)
 public class RedisSentinelConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RedisConfiguration.class);
