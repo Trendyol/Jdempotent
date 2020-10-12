@@ -57,6 +57,7 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 config example
 ```
 jdempotent:
+  enable: true
   cryptography:
     algorithm: MD5
   cache:
@@ -107,5 +108,4 @@ public @interface IdempotentRabbitListener {
     @AliasFor(annotation = RabbitListener.class, attribute = "queues")
     String[] queues() default {};
 }
-
 ```
