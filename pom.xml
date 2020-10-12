@@ -12,6 +12,7 @@
         <java.version>11</java.version>
         <spring.boot.version>1.3.2.RELEASE</spring.boot.version>
         <spring.framework.version>4.0.2.RELEASE</spring.framework.version>
+        <nexus-registry-url>http://sfrontregistry.trendyol.com:8081</nexus-registry-url>
     </properties>
 
     <modules>
@@ -76,5 +77,12 @@
         </dependencies>
 
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>trendyol-maven-release</id>
+            <url>${nexus-registry-url}/repository/maven-releases/</url>
+        </repository>
+    </repositories>
 
 </project>

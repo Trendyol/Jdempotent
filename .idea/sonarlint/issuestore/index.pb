@@ -19,3 +19,5 @@ gJdempotent-spring-boot-redis-starter/src/main/java/com/Jdempotent/redis/RedisSe
 ,Jdempotent-spring-boot-redis-starter/pom.xml,6/b/6b91d81cef14c04adda95d4319a9f4f8f8029887
 G
 Jdempotent-core/pom.xml,1/5/15ed7512465263800dd6832cc469c2cc1ec4f7bf
+9
+	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
