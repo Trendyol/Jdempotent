@@ -111,6 +111,7 @@ public @interface IdempotentRabbitListener {
 ```
 TODOS
 <ol>
+<li>ci pipeline</li>
 <li>Consumer projelerinde exceptional caselerin çıkarılması jira : https://jtracker.trendyol.com/browse/CUS-1445</li>
 <li>UT,IT testlerinin yazılması</li>
 <li>disable request&response config</li>
