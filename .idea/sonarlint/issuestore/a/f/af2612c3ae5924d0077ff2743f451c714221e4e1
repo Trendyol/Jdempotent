@@ -1,12 +1,12 @@
 
 J
-java:S3740"/Provide the parametrized type for this generic.(•Ûöîüÿÿÿÿ
-J
 java:S3740"/Provide the parametrized type for this generic.(ÑÒ¿½ûÿÿÿÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(´ñóŒ
 W
 java:S2259*"AA "NullPointerException" could be thrown; "get" is nullable here.(Âúî³
-o
-java:S2259;"TA "NullPointerException" could be thrown; "requestResponseWrapper" is nullable here.(ÜÊàüÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(´ñóŒ
 g	java:S116"RRename this field "APPNAME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Åíïæ
 V	java:S125%"<This block of commented-out lines of code should be removed.(ÏÄ‚ùÿÿÿÿ
+J
+java:S3740"/Provide the parametrized type for this generic.(•Ûöîüÿÿÿÿ
+o
+java:S2259;"TA "NullPointerException" could be thrown; "requestResponseWrapper" is nullable here.(ÜÊàüÿÿÿÿ
