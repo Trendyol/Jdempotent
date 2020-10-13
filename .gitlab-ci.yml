@@ -32,14 +32,14 @@ stages:
 Test:
   stage: Test
   <<: *only_except_skip_ci_test
-  image: openjdk:11.0.3-jdk-slim
+  image: maven:3.6.3-jdk-11-slim
   script:
     - mvn verify --no-transfer-progress
 
 Build:
   stage: Build
   <<: *only_except_skip_ci_manual
-  image: openjdk:11.0.3-jdk-slim
+  image: maven:3.6.3-jdk-11-slim
   script:
     - java -version
     #- mvn versions:set -DnewVersion=$VERSION
