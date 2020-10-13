@@ -32,7 +32,7 @@ stages:
 Test:
   stage: Test
   <<: *only_except_skip_ci_test
-  image: maven:3.6.3-jdk-11-slim
+  image: openjdk:11.0.3-jdk-slim
 
   environment:
     name: test
@@ -44,7 +44,7 @@ Test:
 Build:
   stage: Build
   <<: *only_except_skip_ci_manual
-  image: maven:3.6.3-jdk-11-slim
+  image: openjdk:11.0.3-jdk-slim
   environment:
     name: build
   tags:
