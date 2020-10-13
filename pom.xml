@@ -101,15 +101,15 @@
 
     <distributionManagement>
         <repository>
-            <id>trendyol-maven-release</id>
-            <url>${nexus-registry-url}/repository/maven-releases/</url>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.trendyol.com/api/v4/projects/2146/packages/maven</url>
         </repository>
     </distributionManagement>
 
     <repositories>
         <repository>
-            <id>trendyol-maven-release</id>
-            <url>${nexus-registry-url}/repository/maven-releases/</url>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.trendyol.com/api/v4/projects/2146/packages/maven</url>
         </repository>
     </repositories>
 
