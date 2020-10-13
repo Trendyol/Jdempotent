@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-    <version>0.8.0</version>
+    <version>0.8.1</version>
     <name>Jdempotent-spring-boot-redis-starter</name>
     <packaging>jar</packaging>
     <url>https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent-spring-boot-starter</url>
