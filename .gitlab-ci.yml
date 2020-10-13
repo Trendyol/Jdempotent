@@ -41,6 +41,6 @@ Build:
   <<: *only_except_skip_ci_manual
   image: maven:3.6.3-jdk-11-slim
   script:
-    - java -version
-    #- mvn versions:set -DnewVersion=$VERSION
+    #- java -version
+    #    - mvn --batch-mode release:update-versions -DdevelopmentVersion=0.8.$VERSION
     - mvn -U -s settings.xml clean deploy -DskipTests=true
