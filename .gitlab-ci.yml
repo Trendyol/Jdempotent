@@ -43,4 +43,4 @@ Build:
   script:
     - java -version
     #- mvn versions:set -DnewVersion=$VERSION
-    - mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.wagon.providers.http.httpclient.wire=trace -U -s settings.xml clean deploy -DskipTests=true
+    - mvn -U -s settings.xml clean deploy -DskipTests=true
