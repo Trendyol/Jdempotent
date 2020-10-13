@@ -4,7 +4,7 @@
     <groupId>com.trendyol</groupId>
     <artifactId>jdempotent</artifactId>
     <packaging>pom</packaging>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
     <name>Jdempotent</name>
     <url>https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent-spring-boot-starter</url>
 
