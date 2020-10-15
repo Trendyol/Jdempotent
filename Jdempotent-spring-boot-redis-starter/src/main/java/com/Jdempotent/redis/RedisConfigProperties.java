@@ -17,6 +17,9 @@ import java.util.List;
         matchIfMissing = true)
 public class RedisConfigProperties {
 
+    @Value("${jdempotent.cache.redis.database:0}")
+    private Integer database;
+
     @Value("${jdempotent.cache.redis.sentinelPort}")
     private Integer sentinelPort;
 
@@ -114,5 +117,13 @@ public class RedisConfigProperties {
 
     public void setMaxRetryCount(String maxRetryCount) {
         this.maxRetryCount = maxRetryCount;
+    }
+
+    public Integer getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(Integer database) {
+        this.database = database;
     }
 }

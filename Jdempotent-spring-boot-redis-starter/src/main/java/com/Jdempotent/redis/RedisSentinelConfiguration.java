@@ -37,6 +37,7 @@ public class RedisSentinelConfiguration {
         redisProperties.getSentinelHostList().forEach(
                 host -> sentinelConfiguration.sentinel(host, redisProperties.getSentinelPort()));
         sentinelConfiguration.setPassword(redisProperties.getPassword());
+        sentinelConfiguration.setDatabase(redisProperties.getDatabase());
         return new LettuceConnectionFactory(sentinelConfiguration,
                 org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration
                         .defaultConfiguration());

@@ -29,12 +29,14 @@ import java.util.concurrent.TimeUnit;
 public class RedisIdempotentRepository implements IdempotentRepository {
 
     private final ValueOperations<IdempotencyKey, IdempotentRequestResponseWrapper> valueOperations;
+    private final RedisTemplate redisTemplate;
     private final RedisConfigProperties redisProperties;
     private final Long DELETION_DEFAULT_TIME = 1l;
 
 
     public RedisIdempotentRepository(RedisTemplate redisTemplate, RedisConfigProperties redisProperties) {
         valueOperations = redisTemplate.opsForValue();
+        this.redisTemplate = redisTemplate;
         this.redisProperties = redisProperties;
     }
 
@@ -55,7 +57,7 @@ public class RedisIdempotentRepository implements IdempotentRepository {
 
     @Override
     public void remove(IdempotencyKey idempotencyKey) {
-        valueOperations.set(idempotencyKey, new IdempotentRequestResponseWrapper(null), DELETION_DEFAULT_TIME, TimeUnit.NANOSECONDS);
+        redisTemplate.delete(idempotencyKey);
     }
 
     @Override
