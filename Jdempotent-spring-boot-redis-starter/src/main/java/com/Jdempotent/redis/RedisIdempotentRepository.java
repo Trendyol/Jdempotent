@@ -31,7 +31,6 @@ public class RedisIdempotentRepository implements IdempotentRepository {
     private final ValueOperations<IdempotencyKey, IdempotentRequestResponseWrapper> valueOperations;
     private final RedisTemplate redisTemplate;
     private final RedisConfigProperties redisProperties;
-    private final Long DELETION_DEFAULT_TIME = 1l;
 
 
     public RedisIdempotentRepository(RedisTemplate redisTemplate, RedisConfigProperties redisProperties) {
