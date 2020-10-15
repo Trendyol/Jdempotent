@@ -63,7 +63,7 @@ public class RedisIdempotentRepository implements IdempotentRepository {
         if (contains(idempotencyKey)) {
             IdempotentRequestResponseWrapper requestResponseWrapper = valueOperations.get(idempotencyKey);
             requestResponseWrapper.setResponse(response);
-            valueOperations.set(idempotencyKey, new IdempotentRequestResponseWrapper(request), 2, TimeUnit.MINUTES);
+            valueOperations.set(idempotencyKey, new IdempotentRequestResponseWrapper(request), redisProperties.getExpirationTimeHour(), TimeUnit.MINUTES);
         }
     }
 
