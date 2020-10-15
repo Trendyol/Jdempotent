@@ -21,5 +21,10 @@
       <option name="name" value="trendyol-maven-release" />
       <option name="url" value="http://sfrontregistry.trendyol.com:8081/repository/maven-releases/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="gitlab-maven" />
+      <option name="name" value="gitlab-maven" />
+      <option name="url" value="https://gitlab.trendyol.com/api/v4/projects/2146/packages/maven" />
+    </remote-repository>
   </component>
 </project>
