@@ -62,6 +62,7 @@ jdempotent:
     algorithm: MD5
   cache:
     redis:
+      database: 1
       password: "nEx-ya5-sso-ecomm"
       sentinelHostList: 10.250.217.172,10.250.217.173,10.250.217.174
       sentinelPort: "26379"
