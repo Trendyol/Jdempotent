@@ -30,7 +30,7 @@ public class RedisConfigProperties {
     private List<String> sentinelHostList;
 
     @Value("${jdempotent.cache.redis.expirationTimeHour}")
-    private Integer expirationTimeHour;
+    private Long expirationTimeHour;
 
     @Value("${jdempotent.cache.redis.dialTimeoutSecond}")
     private String dialTimeoutSecond;
@@ -76,11 +76,11 @@ public class RedisConfigProperties {
         this.sentinelHostList = sentinelHostList;
     }
 
-    public Integer getExpirationTimeHour() {
+    public Long getExpirationTimeHour() {
         return expirationTimeHour;
     }
 
-    public void setExpirationTimeHour(Integer expirationTimeHour) {
+    public void setExpirationTimeHour(Long expirationTimeHour) {
         this.expirationTimeHour = expirationTimeHour;
     }
 

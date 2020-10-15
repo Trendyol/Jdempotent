@@ -19,6 +19,12 @@ import org.springframework.data.redis.core.RedisTemplate;
         matchIfMissing = true)
 public class ApplicationConfig {
 
+    private final RedisConfigProperties redisProperties;
+
+    public ApplicationConfig(RedisConfigProperties redisProperties) {
+        this.redisProperties = redisProperties;
+    }
+
     @Bean
     @ConditionalOnProperty(
             value = "jdempotent.enable",
@@ -26,12 +32,12 @@ public class ApplicationConfig {
             matchIfMissing = true)
     @ConditionalOnClass(ErrorConditionalCallback.class)
     public IdempotentAspect getLogMethodExecutionTimeAspect(RedisTemplate redisTemplate, ErrorConditionalCallback errorConditionalCallback) {
-        return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate), errorConditionalCallback);
+        return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate, redisProperties), errorConditionalCallback);
     }
 
     @Bean
     public IdempotentAspect getLogMethodExecutionTimeAspect(RedisTemplate redisTemplate) {
-        return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate));
+        return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate, redisProperties));
     }
 
 }

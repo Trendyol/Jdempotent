@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-    <version>0.8.2</version>
+    <version>0.8.3</version>
     <name>Jdempotent-spring-boot-redis-starter</name>
     <packaging>jar</packaging>
     <url>https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent-spring-boot-starter</url>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.trendyol</groupId>
             <artifactId>Jdempotent-core</artifactId>
-            <version>0.8.2</version>
+            <version>0.8.3</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
@@ -39,6 +39,26 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.7.4</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- Unit Test Dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.1.6.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.0-rc1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
