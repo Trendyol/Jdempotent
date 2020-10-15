@@ -43,7 +43,7 @@ public class RedisSentinelConfiguration {
     }
 
     @Bean
-    public RedisTemplate redisTemplate() {
+    public RedisTemplate<String, IdempotentResponseWrapper> redisTemplate() {
         RedisTemplate<String, IdempotentResponseWrapper> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory());
         redisTemplate.afterPropertiesSet();
