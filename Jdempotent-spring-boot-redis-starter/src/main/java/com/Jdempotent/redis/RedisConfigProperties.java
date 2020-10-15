@@ -17,6 +17,9 @@ import java.util.List;
         matchIfMissing = true)
 public class RedisConfigProperties {
 
+    @Value("${jdempotent.cache.redis.database:0}")
+    private Integer database;
+
     @Value("${jdempotent.cache.redis.sentinelPort}")
     private Integer sentinelPort;
 
@@ -30,7 +33,7 @@ public class RedisConfigProperties {
     private List<String> sentinelHostList;
 
     @Value("${jdempotent.cache.redis.expirationTimeHour}")
-    private Integer expirationTimeHour;
+    private Long expirationTimeHour;
 
     @Value("${jdempotent.cache.redis.dialTimeoutSecond}")
     private String dialTimeoutSecond;
@@ -76,11 +79,11 @@ public class RedisConfigProperties {
         this.sentinelHostList = sentinelHostList;
     }
 
-    public Integer getExpirationTimeHour() {
+    public Long getExpirationTimeHour() {
         return expirationTimeHour;
     }
 
-    public void setExpirationTimeHour(Integer expirationTimeHour) {
+    public void setExpirationTimeHour(Long expirationTimeHour) {
         this.expirationTimeHour = expirationTimeHour;
     }
 
@@ -114,5 +117,13 @@ public class RedisConfigProperties {
 
     public void setMaxRetryCount(String maxRetryCount) {
         this.maxRetryCount = maxRetryCount;
+    }
+
+    public Integer getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(Integer database) {
+        this.database = database;
     }
 }

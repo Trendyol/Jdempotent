@@ -37,13 +37,14 @@ public class RedisSentinelConfiguration {
         redisProperties.getSentinelHostList().forEach(
                 host -> sentinelConfiguration.sentinel(host, redisProperties.getSentinelPort()));
         sentinelConfiguration.setPassword(redisProperties.getPassword());
+        sentinelConfiguration.setDatabase(redisProperties.getDatabase());
         return new LettuceConnectionFactory(sentinelConfiguration,
                 org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration
                         .defaultConfiguration());
     }
 
     @Bean
-    public RedisTemplate redisTemplate() {
+    public RedisTemplate<String, IdempotentResponseWrapper> redisTemplate() {
         RedisTemplate<String, IdempotentResponseWrapper> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory());
         redisTemplate.afterPropertiesSet();
