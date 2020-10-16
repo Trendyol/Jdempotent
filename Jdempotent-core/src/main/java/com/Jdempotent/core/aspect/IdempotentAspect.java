@@ -207,6 +207,15 @@ public class IdempotentAspect {
     }
 
     /**
+     *
+     * @return
+     */
+    public IdempotentRepository getIdempotentRepository() {
+        return idempotentRepository;
+    }
+
+
+    /**
      * Generates a idempotent key for incoming event
      *
      * @param requestObject

@@ -22,7 +22,7 @@ new dependecy
     <dependency>
         <groupId>com.trendyol</groupId>
         <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-        <version>0.8.3</version>
+        <version>0.8.4</version>
     </dependency>
 ```
 
