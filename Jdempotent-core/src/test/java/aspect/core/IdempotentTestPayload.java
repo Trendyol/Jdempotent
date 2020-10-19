@@ -1,9 +1,12 @@
-package aspect;
+package aspect.core;
 
-public class TestPayload {
+public class IdempotentTestPayload {
     private String name;
 
-    public TestPayload(String name) {
+    public IdempotentTestPayload(){
+    }
+
+    public IdempotentTestPayload(String name) {
         this.name = name;
     }
 

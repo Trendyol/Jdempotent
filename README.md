@@ -1,4 +1,4 @@
-# jidempotent-spring-boot-starter
+# Jdempotent
 
 ````
    ___     _                            _             _   
@@ -16,7 +16,6 @@
 Make your listener or etc idempotent easily
 
 # Usage
-new dependecy
 
 ```xml
     <dependency>
@@ -26,18 +25,8 @@ new dependecy
     </dependency>
 ```
 
-old dependecy:
-```xml
-    <dependency>
-       <groupId>com.trendyol.jidempotent</groupId>
-       <artifactId>jidempotent-spring-boot-starter</artifactId>
-       <version>0.0.17-SNAPSHOT</version>
-    </dependency>
-```
-
-You dont need anything, just add dependecy and have fun.
-But if you want custom error case you should implement `ErrorConditionalCallback` 
-
+You almost don't need anything, just add dependency and datasource configuration later have fun.
+But if you want custom error case, you should implement `ErrorConditionalCallback` like a following example
 
 ```java
 @Component
@@ -49,13 +38,15 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
     }
     
     public RuntimeException onErrorCustomException() {
-        return new RuntimeException("SOME MESSAGES....");
+        return new RuntimeException("Status cannot be error");
     }
 
 }
 ```
-config example
-```
+
+### Configuration
+
+```yaml
 jdempotent:
   enable: true
   cryptography:
@@ -75,51 +66,10 @@ jdempotent:
       expireTimeoutHour: 3
 ```
 
-#shortcut implementation
-
-you can replace 
-`@KafkaListener` to `@IdempotentKafkaListener`
-`@RabbitListener` to `@IdempotentRabbitListener`
-
-thats all. you dont need any changes.
-
-```java
-@IdempotentResource
-@KafkaListener
-public @interface IdempotentKafkaListener {
-    @AliasFor(annotation = KafkaListener.class, attribute = "id")
-    String id() default "";
-
-    @AliasFor(annotation = KafkaListener.class, attribute = "containerFactory")
-    String containerFactory() default "";
-
-    @AliasFor(annotation = KafkaListener.class, attribute = "topics")
-    String[] topics() default {};
-
-    @AliasFor(annotation = KafkaListener.class, attribute = "groupId")
-    String groupId() default "";
-
-}
-```
-
-```java
-@IdempotentResource
-@RabbitListener
-public @interface IdempotentRabbitListener {
-    @AliasFor(annotation = RabbitListener.class, attribute = "queues")
-    String[] queues() default {};
-}
-```
-TODOS
-<ol>
-<li>ci pipeline</li>
-<li>Consumer projelerinde exceptional caselerin çıkarılması jira : https://jtracker.trendyol.com/browse/CUS-1445</li>
-<li>UT,IT testlerinin yazılması</li>
-<li>disable request&response config</li>
-<li>algoritma tipinin configden okunması</li>
-<li>java doc update edilmesi</li>
-<li>readme update edilmesi</li>
-<li>examples altına örnek proje yapılması</li>
-<li>Jdempotent-spring-boot-redis-starter yazılması</li>
-<li>yük testi</li>
-</ol>
+### TODOS
+- [ ] Write UT,IT
+- [ ] Disable request&response config
+- [ ] Update Java docs
+- [ ] Update Readme
+- [ ] Write examples under the examples folders
+- [ ] support multiple request paylaod as a paramater
