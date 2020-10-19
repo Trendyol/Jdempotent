@@ -4,9 +4,10 @@ import com.Jdempotent.core.annotation.IdempotentRequestPayload;
 import com.Jdempotent.core.annotation.IdempotentResource;
 import com.Jdempotent.core.callback.ErrorConditionalCallback;
 import com.Jdempotent.core.constant.CryptographyAlgorithm;
-import com.Jdempotent.core.constant.EnvironmentVariableUtils;
 import com.Jdempotent.core.datasource.IdempotentRepository;
 import com.Jdempotent.core.datasource.InMemoryIdempotentRepository;
+import com.Jdempotent.core.generator.DefaultKeyGenerator;
+import com.Jdempotent.core.generator.KeyGenerator;
 import com.Jdempotent.core.model.IdempotencyKey;
 import com.Jdempotent.core.model.IdempotentRequestWrapper;
 import com.Jdempotent.core.model.IdempotentResponseWrapper;
@@ -16,7 +17,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.security.MessageDigest;
@@ -29,9 +29,25 @@ import java.security.NoSuchAlgorithmException;
 @Aspect
 public class IdempotentAspect {
     private static final Logger logger = LoggerFactory.getLogger(IdempotentAspect.class);
-    private final String appName;
+    private KeyGenerator keyGenerator;
     private IdempotentRepository idempotentRepository;
     private ErrorConditionalCallback errorCallback;
+
+    private static final ThreadLocal<StringBuilder> stringBuilders =
+            new ThreadLocal<>() {
+                @Override
+                protected StringBuilder initialValue() {
+                    return new StringBuilder();
+                }
+
+                @Override
+                public StringBuilder get() {
+                    StringBuilder builder = super.get();
+                    builder.setLength(0);
+                    return builder;
+                }
+            };
+
 
     private static final ThreadLocal<MessageDigest> messageDigests =
             new ThreadLocal<>() {
@@ -53,41 +69,43 @@ public class IdempotentAspect {
                 }
             };
 
-    private static final ThreadLocal<StringBuilder> stringBuilders =
-            new ThreadLocal<>() {
-                @Override
-                protected StringBuilder initialValue() {
-                    return new StringBuilder();
-                }
-
-                @Override
-                public StringBuilder get() {
-                    StringBuilder builder = super.get();
-                    builder.setLength(0);
-                    return builder;
-                }
-            };
-
     public IdempotentAspect() {
-        appName = System.getenv(EnvironmentVariableUtils.APP_NAME);
-        idempotentRepository = new InMemoryIdempotentRepository();
+        this.idempotentRepository = new InMemoryIdempotentRepository();
+        this.keyGenerator = new DefaultKeyGenerator();
     }
 
     public IdempotentAspect(ErrorConditionalCallback errorCallback) {
         this.errorCallback = errorCallback;
-        appName = System.getenv(EnvironmentVariableUtils.APP_NAME);
-        idempotentRepository = new InMemoryIdempotentRepository();
+        this.idempotentRepository = new InMemoryIdempotentRepository();
+        this.keyGenerator = new DefaultKeyGenerator();
     }
 
     public IdempotentAspect(IdempotentRepository idempotentRepository) {
-        appName = System.getenv(EnvironmentVariableUtils.APP_NAME);
         this.idempotentRepository = idempotentRepository;
+        this.keyGenerator = new DefaultKeyGenerator();
     }
 
     public IdempotentAspect(IdempotentRepository idempotentRepository, ErrorConditionalCallback errorCallback) {
-        appName = System.getenv(EnvironmentVariableUtils.APP_NAME);
         this.idempotentRepository = idempotentRepository;
         this.errorCallback = errorCallback;
+        this.keyGenerator = new DefaultKeyGenerator();
+    }
+
+    public IdempotentAspect(ErrorConditionalCallback errorCallback, DefaultKeyGenerator keyGenerator) {
+        this.errorCallback = errorCallback;
+        this.idempotentRepository = new InMemoryIdempotentRepository();
+        this.keyGenerator = keyGenerator;
+    }
+
+    public IdempotentAspect(IdempotentRepository idempotentRepository, DefaultKeyGenerator keyGenerator) {
+        this.idempotentRepository = idempotentRepository;
+        this.keyGenerator = keyGenerator;
+    }
+
+    public IdempotentAspect(IdempotentRepository idempotentRepository, ErrorConditionalCallback errorCallback, DefaultKeyGenerator keyGenerator) {
+        this.idempotentRepository = idempotentRepository;
+        this.errorCallback = errorCallback;
+        this.keyGenerator = keyGenerator;
     }
 
     /**
@@ -101,7 +119,8 @@ public class IdempotentAspect {
     public Object execute(ProceedingJoinPoint pjp) throws Throwable {
         String classAndMethodName = generateLogPrefixForIncomingEvent(pjp);
         IdempotentRequestWrapper requestObject = findIdempotentRequestArg(pjp);
-        IdempotencyKey idempotencyKey = generateIdempotentKey(requestObject, pjp);
+        String listenerName = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).cachePrefix();
+        IdempotencyKey idempotencyKey = keyGenerator.generateIdempotentKey(requestObject, listenerName, stringBuilders.get(), messageDigests.get());
 
         logger.debug(classAndMethodName + "starting for {}", requestObject);
 
@@ -207,34 +226,10 @@ public class IdempotentAspect {
     }
 
     /**
-     * Generates a idempotent key for incoming event
-     *
-     * @param requestObject
-     * @param pjp
      * @return
      */
-    private IdempotencyKey generateIdempotentKey(IdempotentRequestWrapper requestObject, ProceedingJoinPoint pjp) {
-        StringBuilder builder = stringBuilders.get();
-        MessageDigest messageDigest = messageDigests.get();
-        String listenerName = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).cachePrefix();
-
-        messageDigest.update(requestObject.toString().getBytes());
-        byte[] digest = messageDigest.digest();
-
-        if (!StringUtils.isEmpty(appName)) {
-            builder.append(appName);
-            builder.append("-");
-        }
-
-        if (!StringUtils.isEmpty(listenerName)) {
-            builder.append(listenerName);
-            builder.append("-");
-        }
-
-        for (byte b : digest) {
-            builder.append(Integer.toHexString(0xFF & b));
-        }
-
-        return new IdempotencyKey(builder.toString());
+    public IdempotentRepository getIdempotentRepository() {
+        return idempotentRepository;
     }
+
 }

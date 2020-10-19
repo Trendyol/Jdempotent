@@ -31,12 +31,12 @@ public class ApplicationConfig {
             havingValue = "true",
             matchIfMissing = true)
     @ConditionalOnClass(ErrorConditionalCallback.class)
-    public IdempotentAspect getLogMethodExecutionTimeAspect(RedisTemplate redisTemplate, ErrorConditionalCallback errorConditionalCallback) {
+    public IdempotentAspect getIdempotentAspect(RedisTemplate redisTemplate, ErrorConditionalCallback errorConditionalCallback) {
         return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate, redisProperties), errorConditionalCallback);
     }
 
     @Bean
-    public IdempotentAspect getLogMethodExecutionTimeAspect(RedisTemplate redisTemplate) {
+    public IdempotentAspect getIdempotentAspect(RedisTemplate redisTemplate) {
         return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate, redisProperties));
     }
 
