@@ -1,5 +1,7 @@
 # Jdempotent
 
+[![pipeline status](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/pipeline.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)
+
 ````
    ___     _                            _             _   
   |_  |   | |                          | |           | |  
