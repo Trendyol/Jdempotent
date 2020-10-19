@@ -25,6 +25,9 @@ Make your listener or etc idempotent easily
     </dependency>
 ```
 
+```shell script
+  mvn -U clean install -s settings.xml -DskipTests=true 
+```
 You almost don't need anything, just add dependency and datasource configuration later have fun.
 But if you want custom error case, you should implement `ErrorConditionalCallback` like a following example
 
