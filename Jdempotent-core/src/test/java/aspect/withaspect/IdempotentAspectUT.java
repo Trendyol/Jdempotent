@@ -113,7 +113,6 @@ public class IdempotentAspectUT {
         when(joinPoint.getTarget().getClass().getSimpleName()).thenReturn("TestIdempotentResource");
         when(idempotentRepository.contains(any())).thenReturn(false);
 
-
         //when
         idempotentAspect.execute(joinPoint);
 
@@ -187,6 +186,5 @@ public class IdempotentAspectUT {
         verify(joinPoint).proceed();
         verify(idempotentRepository, times(0)).setResponse(any(), any(), any());
         verify(idempotentRepository, times(1)).remove(any());
-
     }
 }
