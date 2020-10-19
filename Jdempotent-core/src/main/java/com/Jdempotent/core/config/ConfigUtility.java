@@ -7,5 +7,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ConfigUtility {
     @Value("${jdempotent.cryptography.algorithm}")
-    private CryptographyAlgorithm algorithm;
+    private String algorithm;
 }
