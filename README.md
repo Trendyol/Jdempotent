@@ -75,4 +75,5 @@ jdempotent:
 - [ ] Update Java docs
 - [ ] Update Readme
 - [ ] Write examples under the examples folders
-- [ ] support multiple request paylaod as a paramater
+- [ ] Support multiple request paylaod as a paramater
+- [ ] Ignore a throwing custom exception like ErrorConditionalCallback
