@@ -1,8 +1,0 @@
-
-q
-java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.( ÝÙ¯8õ’¢¾Ñ.
-J
-java:S3740"/Provide the parametrized type for this generic.(ïÄ²úùÿÿÿÿ
-E
-java:S3740"/Provide the parametrized type for this generic.(´™œ 
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(´ñóŒ
