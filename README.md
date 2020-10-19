@@ -1,6 +1,4 @@
-# Jdempotent
-
-[![pipeline status](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/pipeline.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  [![coverage report](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/coverage.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)
+# Jdempotent [![pipeline status](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/pipeline.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  [![coverage report](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/coverage.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)
 
 <p align="center">
   <img src="examples/logo.jpg">
