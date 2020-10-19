@@ -2,18 +2,10 @@
 
 [![pipeline status](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/pipeline.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  [![coverage report](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/coverage.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)
 
-![Logo](examples/logo.jpg)
+<p align="center">
+  <img src="examples/logo.jpg">
+</p>
 
-````
-   ___     _                            _             _   
-  |_  |   | |                          | |           | |  
-    | | __| | ___ _ __ ___  _ __   ___ | |_ ___ _ __ | |_ 
-    | |/ _` |/ _ \ '_ ` _ \| '_ \ / _ \| __/ _ \ '_ \| __|
-/\__/ / (_| |  __/ | | | | | |_) | (_) | ||  __/ | | | |_ 
-\____/ \__,_|\___|_| |_| |_| .__/ \___/ \__\___|_| |_|\__|
-                           | |                            
-                           |_|                            
-````
 
 # Goal of this jidempotent-spring-boot-starter
 
