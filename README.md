@@ -1,9 +1,8 @@
-# [![pipeline status](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/pipeline.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  [![coverage report](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/coverage.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master) Jdempotent 
+# Jdempotent  [![pipeline status](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/pipeline.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  [![coverage report](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/coverage.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  
 
 <p align="center">
   <img src="examples/logo.jpg">
 </p>
-
 
 # Goal of this jidempotent-spring-boot-starter
 
@@ -67,7 +66,8 @@ jdempotent:
 - [ ] Write UT,IT
 - [ ] Disable request&response config
 - [ ] Update Java docs
-- [ ] Update Readme
+- [X] Update Readme
 - [ ] Write examples under the examples folders
 - [ ] Support multiple request paylaod as a paramater
 - [ ] Ignore a throwing custom exception like ErrorConditionalCallback
+- [ ] Write Jdempotent-spring-boot-hazelcast-starter
