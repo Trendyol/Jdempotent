@@ -1,0 +1,31 @@
+jdempotent:
+  enable: true
+  cryptography:
+    algorithm: MD5
+  cache:
+    redis:
+      database: 9
+      password: "nEx-ya5-sso-ecomm"
+      sentinelHostList: 10.250.221.211,10.250.221.212,10.250.221.213
+      sentinelPort: 26379
+      sentinelMasterName: "ecomcore"
+      expirationTimeHour: 2
+      dialTimeoutSecond: 3
+      readTimeoutSecond: 3
+      writeTimeoutSecond: 3
+      maxRetryCount: 3
+      expireTimeoutHour: 84
+
+email:
+  from:
+    address: XXXXXXX
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: XXXXXXX
+    password: XXXXXXX
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true

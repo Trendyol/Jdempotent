@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%X{correlationId}){faint} %clr(---){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wex"/>
+    <springProperty name="APP_NAME" source="spring.application.name" defaultValue="myLogFile"/>
+    <springProperty name="SPRING_PROFILES_ACTIVE" source="spring.profiles.active"/>
+
+    <springProfile name="local,default">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        <logger name="com.Jdempotent.core" level="DEBUG"/>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+</configuration>

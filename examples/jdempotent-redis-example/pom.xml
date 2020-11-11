@@ -31,7 +31,10 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -53,6 +56,13 @@
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.trendyol</groupId>
+            <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
+            <version>0.8.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -63,5 +73,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.trendyol.com/api/v4/projects/2146/packages/maven</url>
+        </repository>
+    </repositories>
 
 </project>
