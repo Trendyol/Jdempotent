@@ -32,7 +32,7 @@ public class MailSenderService {
         sendMailMultipart(emailRequest.getEmail(), emailRequest.getSubject(), emailRequest.getMessage(), file);
     }
 
-    public void sendMailMultipart(String toEmail, String subject, String message, File file) throws MessagingException {
+    private void sendMailMultipart(String toEmail, String subject, String message, File file) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
