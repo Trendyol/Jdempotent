@@ -1,7 +1,7 @@
 package com.jdempotent.example.demo.controller;
 
 import com.Jdempotent.core.annotation.IdempotentResource;
-import com.jdempotent.example.demo.exception.InvalidEmailAdressException;
+import com.jdempotent.example.demo.exception.InvalidEmailAddressException;
 import com.jdempotent.example.demo.model.SendEmailRequest;
 import com.jdempotent.example.demo.model.SendEmailResponse;
 import com.jdempotent.example.demo.service.MailSenderService;
@@ -29,7 +29,7 @@ public class MailController {
     @IdempotentResource(cachePrefix = "MailController")
     public ResponseEntity<SendEmailResponse> sendEmail(@RequestBody SendEmailRequest request){
         if (StringUtils.isEmpty(request.getEmail())) {
-            throw new InvalidEmailAdressException();
+            throw new InvalidEmailAddressException();
         }
 
         try {

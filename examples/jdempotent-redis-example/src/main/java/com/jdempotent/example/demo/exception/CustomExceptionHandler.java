@@ -21,8 +21,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(InvalidEmailAdressException.class)
-    public final ResponseEntity<?> handleRecordNotFoundException(InvalidEmailAdressException ex, WebRequest request) {
+    @ExceptionHandler(InvalidEmailAddressException.class)
+    public final ResponseEntity<?> handleRecordNotFoundException(InvalidEmailAddressException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Invalid email address", details);
