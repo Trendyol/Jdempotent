@@ -1,7 +1,7 @@
 package aspect.core;
 
-import com.Jdempotent.core.annotation.IdempotentRequestPayload;
-import com.Jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.annotation.IdempotentRequestPayload;
+import com.trendyol.jdempotent.core.annotation.IdempotentResource;
 import org.springframework.stereotype.Component;
 
 @Component

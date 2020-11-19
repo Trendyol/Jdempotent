@@ -2,11 +2,11 @@ package aspect.withaspect;
 
 import aspect.core.IdempotentTestPayload;
 import aspect.core.TestIdempotentResource;
-import com.Jdempotent.core.annotation.IdempotentResource;
-import com.Jdempotent.core.aspect.IdempotentAspect;
-import com.Jdempotent.core.callback.ErrorConditionalCallback;
-import com.Jdempotent.core.datasource.IdempotentRepository;
-import com.Jdempotent.core.generator.DefaultKeyGenerator;
+import com.trendyol.jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
+import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
+import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
+import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Test;

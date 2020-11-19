@@ -6,16 +6,15 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-core</artifactId>
-    <version>0.8.4</version>
+    <version>1.0.0</version>
     <name>Jdempotent-core</name>
     <packaging>jar</packaging>
-    <url>https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent-spring-boot-starter</url>
+    <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-core</url>
 
     <properties>
         <java.version>11</java.version>
         <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
         <spring.framework.version>5.2.9.RELEASE</spring.framework.version>
-        <gitlab-nexus-url>https://gitlab.trendyol.com/api/v4/projects/2146/packages/maven</gitlab-nexus-url>
         <version.mockito>1.10.19</version.mockito>
         <version.junit>4.13.1</version.junit>
     </properties>
@@ -125,19 +124,5 @@
             </build>
         </profile>
     </profiles>
-
-    <distributionManagement>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${gitlab-nexus-url}</url>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${gitlab-nexus-url}</url>
-        </repository>
-    </repositories>
 
 </project>
