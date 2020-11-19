@@ -4,9 +4,9 @@
     <groupId>com.trendyol</groupId>
     <artifactId>jdempotent</artifactId>
     <packaging>pom</packaging>
-    <version>0.8.4</version>
+    <version>1.0.0</version>
     <name>Jdempotent</name>
-    <url>https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent-spring-boot-starter</url>
+    <url>https://github.com/Trendyol/Jdempotent</url>
 
     <properties>
         <java.version>11</java.version>
@@ -14,7 +14,6 @@
         <spring.framework.version>5.2.9.RELEASE</spring.framework.version>
         <version.mockito>1.10.19</version.mockito>
         <version.junit>4.13.1</version.junit>
-        <gitlab-nexus-url>https://gitlab.trendyol.com/api/v4/projects/2146/packages/maven</gitlab-nexus-url>
     </properties>
 
     <modules>
@@ -101,19 +100,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <distributionManagement>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${gitlab-nexus-url}</url>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${gitlab-nexus-url}</url>
-        </repository>
-    </repositories>
 
 </project>

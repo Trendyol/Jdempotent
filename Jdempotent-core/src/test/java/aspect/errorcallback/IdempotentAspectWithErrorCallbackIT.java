@@ -1,14 +1,13 @@
 package aspect.errorcallback;
 
 import aspect.core.IdempotentTestPayload;
-import aspect.withaspect.TestAopContext;
 import aspect.core.TestException;
 import aspect.core.TestIdempotentResource;
-import com.Jdempotent.core.constant.CryptographyAlgorithm;
-import com.Jdempotent.core.datasource.InMemoryIdempotentRepository;
-import com.Jdempotent.core.generator.DefaultKeyGenerator;
-import com.Jdempotent.core.model.IdempotencyKey;
-import com.Jdempotent.core.model.IdempotentRequestWrapper;
+import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
+import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
+import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
+import com.trendyol.jdempotent.core.model.IdempotencyKey;
+import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

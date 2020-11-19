@@ -2,7 +2,7 @@ package aspect.errorcallback;
 
 import aspect.core.IdempotentTestPayload;
 import aspect.core.TestException;
-import com.Jdempotent.core.callback.ErrorConditionalCallback;
+import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 

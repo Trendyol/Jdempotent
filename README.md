@@ -1,10 +1,10 @@
-# Jdempotent  [![pipeline status](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/pipeline.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  [![coverage report](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/badges/master/coverage.svg)](https://gitlab.trendyol.com/customer-service/cs/libs/jdempotent/-/commits/master)  
+# Jdempotent
 
 <p align="center">
   <img src="examples/logo.jpg">
 </p>
 
-# Goal of this jidempotent-spring-boot-starter
+# Goal of this Jdempotent-spring-boot-starter
 
 Make your listener or etc idempotent easily
 
@@ -14,13 +14,10 @@ Make your listener or etc idempotent easily
     <dependency>
         <groupId>com.trendyol</groupId>
         <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-        <version>0.8.4</version>
+        <version>1.0.0</version>
     </dependency>
 ```
 
-```shell script
-  mvn -U clean install -s settings.xml -DskipTests=true 
-```
 You almost don't need anything, just add dependency and datasource configuration later have fun.
 But if you want custom error case, you should implement `ErrorConditionalCallback` like a following example
 
@@ -50,10 +47,10 @@ jdempotent:
   cache:
     redis:
       database: 1
-      password: "nEx-ya5-sso-ecomm"
-      sentinelHostList: 10.250.217.172,10.250.217.173,10.250.217.174
+      password: "password"
+      sentinelHostList: 192.168.0.1,192.168.0.2,192.168.0.3
       sentinelPort: "26379"
-      sentinelMasterName: "ecomcore"
+      sentinelMasterName: "admin"
       expirationTimeHour: 2
       dialTimeoutSecond: 3
       readTimeoutSecond: 3
@@ -65,9 +62,7 @@ jdempotent:
 ### TODOS
 - [ ] Write UT,IT
 - [ ] Disable request&response config
-- [ ] Update Java docs
-- [X] Update Readme
 - [ ] Write examples under the examples folders
 - [ ] Support multiple request paylaod as a paramater
 - [ ] Ignore a throwing custom exception like ErrorConditionalCallback
-- [ ] Write Jdempotent-spring-boot-hazelcast-starter
+- [ ] Support multiple datasources

@@ -1,8 +1,8 @@
 package aspect.withaspect;
 
-import com.Jdempotent.core.aspect.IdempotentAspect;
-import com.Jdempotent.core.datasource.InMemoryIdempotentRepository;
-import com.Jdempotent.core.generator.DefaultKeyGenerator;
+import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
+import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
+import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
