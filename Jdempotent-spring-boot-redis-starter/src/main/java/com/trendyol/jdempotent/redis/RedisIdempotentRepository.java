@@ -1,9 +1,9 @@
 package com.trendyol.jdempotent.redis;
 
 /**
- * import com.Jdempotent.core.datasource.AbstractIdempotentRepository;
- * import com.Jdempotent.core.model.IdempotencyKey;
- * import com.Jdempotent.core.model.IdempotentRequestResponseWrapper;
+ * import com.trendyol.jdempotent.core.datasource.AbstractIdempotentRepository;
+ * import com.trendyol.jdempotent.core.model.IdempotencyKey;
+ * import com.trendyol.jdempotent.core.model.IdempotentRequestResponseWrapper;
  * <p>
  * import java.util.Map;
  * <p>

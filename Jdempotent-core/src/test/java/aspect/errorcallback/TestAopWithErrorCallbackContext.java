@@ -10,7 +10,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = { "com.Jdempotent.core" })
+@ComponentScan(basePackages = { "com.trendyol.jdempotent.core" })
 public class TestAopWithErrorCallbackContext {
 
     @Bean
