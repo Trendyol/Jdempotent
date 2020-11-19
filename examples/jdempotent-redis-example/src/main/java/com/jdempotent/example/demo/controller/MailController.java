@@ -1,6 +1,6 @@
 package com.jdempotent.example.demo.controller;
 
-import com.Jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.annotation.IdempotentResource;
 import com.jdempotent.example.demo.exception.InvalidEmailAddressException;
 import com.jdempotent.example.demo.model.SendEmailRequest;
 import com.jdempotent.example.demo.model.SendEmailResponse;
