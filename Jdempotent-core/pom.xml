@@ -208,7 +208,7 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     <!-- Skip deployment to Nexus for test project -->
-                    <skipRemoteStaging>false</skipRemoteStaging>
+                    <skipRemoteStaging>true</skipRemoteStaging>
                 </configuration>
             </plugin>
             <plugin>
