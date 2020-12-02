@@ -10,6 +10,29 @@
     <name>Jdempotent-spring-boot-redis-starter</name>
     <packaging>jar</packaging>
     <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-spring-boot-redis-starter</url>
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://github.com/Trendyol/Jdempotent/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:Trendyol/Jdempotent.git</connection>
+        <developerConnection>scm:git:git@github.com:Trendyol/Jdempotent.git</developerConnection>
+        <url>https://github.com/Trendyol/Jdempotent</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Mehmet ARI</name>
+            <url>https://github.com/memojja/</url>
+            <organization>Trendyol</organization>
+            <organizationUrl>https://github.com/trendyol</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>11</java.version>
