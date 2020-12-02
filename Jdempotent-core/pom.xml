@@ -183,7 +183,7 @@
                 <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     <!-- Skip deployment to Nexus for test project -->
                     <skipRemoteStaging>false</skipRemoteStaging>
                 </configuration>
