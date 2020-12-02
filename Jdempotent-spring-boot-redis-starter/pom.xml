@@ -11,12 +11,6 @@
     <packaging>jar</packaging>
     <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-spring-boot-redis-starter</url>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
-    </parent>
-
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
