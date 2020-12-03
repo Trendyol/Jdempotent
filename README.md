@@ -10,6 +10,8 @@ Make your listener or etc idempotent easily
 
 # Usage
 
+1 - First of all you need add dependency to pom.xml
+
 ```xml
     <dependency>
         <groupId>com.trendyol</groupId>
@@ -18,7 +20,28 @@ Make your listener or etc idempotent easily
     </dependency>
 ```
 
-You almost don't need anything, just add dependency and datasource configuration later have fun.
+2 - You should add `@IdempotentResource` annotation to that you want to make idempotent resource, listener etc.
+
+```java
+@IdempotentResource(cachePrefix = "WelcomingListener")
+@KafkaListener(topics = "trendyol.mail.welcome", groupId = "group_id")
+public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
+    SendEmailRequest request = SendEmailRequest.builder()
+            .email(message)
+            .subject(subject)
+            .build();
+
+    try {
+        mailSenderService.sendMail(request);
+    } catch (MessagingException e) {
+        logger.error("MailSenderService.sendEmail() throw exception {} event: {} ", e, emailAdress);
+
+        // Throwing any exception is enough to delete from redis. When successful, it will not be deleted from redis and will be idempotent.
+        throw new RetryIdempotentRequestException(e);
+    }
+}
+```
+3 - You almost don't need anything, just add dependency and datasource configuration later have fun.
 But if you want custom error case, you should implement `ErrorConditionalCallback` like a following example
 
 ```java
@@ -60,7 +83,6 @@ jdempotent:
 ```
 
 ### TODOS
-- [ ] Write UT,IT
 - [ ] Disable request&response config
 - [ ] Write examples under the examples folders
 - [ ] Support multiple request paylaod as a paramater
