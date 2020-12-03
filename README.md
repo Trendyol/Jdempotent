@@ -41,8 +41,7 @@ public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
     }
 }
 ```
-3 - You almost don't need anything, just add dependency and datasource configuration later have fun.
-But if you want custom error case, you should implement `ErrorConditionalCallback` like a following example
+3 - If you want custom error case, you should implement `ErrorConditionalCallback` like a following example
 
 ```java
 @Component
@@ -65,8 +64,6 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 ```yaml
 jdempotent:
   enable: true
-  cryptography:
-    algorithm: MD5
   cache:
     redis:
       database: 1
