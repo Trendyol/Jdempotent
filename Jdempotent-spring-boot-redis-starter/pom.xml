@@ -10,6 +10,7 @@
     <name>Jdempotent-spring-boot-redis-starter</name>
     <packaging>jar</packaging>
     <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-spring-boot-redis-starter</url>
+    <description>Jdempotent-spring-boot-redis-starter</description>
 
     <licenses>
         <license>
