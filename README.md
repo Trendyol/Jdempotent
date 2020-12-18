@@ -59,16 +59,7 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 }
 ```
 
-### Performance
-
-As it is shown in the following image, the most cpu consuming part of jdempotent is getting a redis connection so we don't need to worry performance related issues.
-
-<p align="center">
-  <img src="examples/cpu-profiling.png">
-</p>
-
-
-### Configuration
+4 - Let's make redis configuration 
 
 ```yaml
 jdempotent:
@@ -87,6 +78,14 @@ jdempotent:
       maxRetryCount: 3
       expireTimeoutHour: 3
 ```
+
+### Performance
+
+As it is shown in the following image, the most cpu consuming part of jdempotent is getting a redis connection so we don't need to worry performance related issues.
+
+<p align="center">
+  <img src="examples/cpu-profiling.png">
+</p>
 
 ### TODOS
 - [ ] Disable request&response config
