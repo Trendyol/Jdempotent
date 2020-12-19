@@ -87,6 +87,10 @@ As it is shown in the following image, the most cpu consuming part of jdempotent
   <img src="examples/cpu-profiling.png">
 </p>
 
+### Java Docs
+[Jdempotent-core](https://memojja.github.io/jdempotent-core/index.html)
+[Jdempotent-spring-boot-redis-starter](https://memojja.github.io/jdempotent-spring-boot-redis-starter/index.html)
+
 ### TODOS
 - [ ] Disable request&response config
 - [ ] Write examples under the examples folders
