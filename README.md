@@ -88,11 +88,11 @@ As it is shown in the following image, the most cpu consuming part of jdempotent
 </p>
 
 ### Java Docs
-[Jdempotent-core](https://memojja.github.io/jdempotent-core/index.html)
+[Jdempotent-core](https://memojja.github.io/jdempotent-core/index.html) <br/>
 [Jdempotent-spring-boot-redis-starter](https://memojja.github.io/jdempotent-spring-boot-redis-starter/index.html)
 
 ### TODOS
-- [ ] Disable request&response config
+- [ ] Disable request&response configgi
 - [ ] Write examples under the examples folders
 - [ ] Support multiple request paylaod as a paramater
 - [ ] Ignore a throwing custom exception like ErrorConditionalCallback
