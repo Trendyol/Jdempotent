@@ -11,6 +11,7 @@ import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  *
@@ -48,6 +49,7 @@ public class RedisSentinelConfiguration {
         RedisTemplate<String, IdempotentResponseWrapper> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory());
         redisTemplate.afterPropertiesSet();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setDefaultSerializer(new GenericJackson2JsonRedisSerializer());
         return redisTemplate;
     }

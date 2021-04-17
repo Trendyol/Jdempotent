@@ -22,7 +22,7 @@ public class DefaultKeyGenerator implements KeyGenerator {
         appName = System.getenv(EnvironmentVariableUtils.APP_NAME);
     }
 
-     /**
+    /**
      *
      * Generates a idempotent key for incoming event
      *
@@ -52,5 +52,4 @@ public class DefaultKeyGenerator implements KeyGenerator {
 
         return new IdempotencyKey(builder.toString());
     }
-
 }

@@ -47,6 +47,17 @@ public class RedisConfigProperties {
     @Value("${jdempotent.cache.redis.maxRetryCount}")
     private String maxRetryCount;
 
+    @Value("${jdempotent.cache.persistReqRes:true}")
+    private Boolean persistReqRes;
+
+    public Boolean getPersistReqRes() {
+        return persistReqRes;
+    }
+
+    public void setPersistReqRes(Boolean persistReqRes) {
+        this.persistReqRes = persistReqRes;
+    }
+
     public Integer getSentinelPort() {
         return sentinelPort;
     }

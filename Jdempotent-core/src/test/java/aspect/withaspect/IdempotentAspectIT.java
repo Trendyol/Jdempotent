@@ -8,6 +8,7 @@ import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import com.trendyol.jdempotent.core.model.IdempotencyKey;
+import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +56,10 @@ public class IdempotentAspectIT {
     public void given_new_payload_when_trigger_aspect_then_that_will_be_aviable_in_repository() throws NoSuchAlgorithmException {
         //given
         IdempotentTestPayload test = new IdempotentTestPayload();
-        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(test), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put("name", null);
+
+        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
         testIdempotentResource.idempotentMethod(test);
@@ -65,15 +69,18 @@ public class IdempotentAspectIT {
     }
 
     @Test
-    public void given_new_multiple_payloads_when_trigger_aspect_then_that_will_be_aviable_in_repository() throws NoSuchAlgorithmException {
+    public void given_new_multiple_payloads_when_trigger_aspect_then_that_will_be_available_in_repository() throws NoSuchAlgorithmException {
         //given
         IdempotentTestPayload test = new IdempotentTestPayload();
         IdempotentTestPayload test1 = new IdempotentTestPayload();
         IdempotentTestPayload test2 = new IdempotentTestPayload();
-        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(test), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put("name", null);
+
+        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
-        testIdempotentResource.idempotentMethodWithThreeParamater(test, test1, test2);
+        testIdempotentResource.idempotentMethodWithThreeParameter(test, test1, test2);
 
         //then
         assertTrue(idempotentRepository.contains(idempotencyKey));
@@ -83,7 +90,11 @@ public class IdempotentAspectIT {
     public void given_invalid_payload_when_trigger_aspect_then_throw_test_exception_and_repository_will_be_empty() throws NoSuchAlgorithmException {
         //given
         IdempotentTestPayload test = new IdempotentTestPayload();
-        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(test), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+        test.setName("invalid");
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put("name", "invalid");
+
+        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
         testIdempotentResource.idempotentMethodThrowingARuntimeException(test);
@@ -98,7 +109,9 @@ public class IdempotentAspectIT {
         IdempotentTestPayload test = new IdempotentTestPayload();
         IdempotentTestPayload test1 = new IdempotentTestPayload();
         Object test2 = new Object();
-        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(test1), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put("name", null);
+        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
         testIdempotentResource.idempotentMethodWithThreeParamaterAndMultipleIdempotentRequestPayloadAnnotation(test, test1, test2);
@@ -125,5 +138,4 @@ public class IdempotentAspectIT {
         //then
         testIdempotentResource.methodWithTwoParamater(test, test1);
     }
-
 }

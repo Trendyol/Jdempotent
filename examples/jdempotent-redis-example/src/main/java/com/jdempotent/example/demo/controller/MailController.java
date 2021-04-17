@@ -1,10 +1,10 @@
 package com.jdempotent.example.demo.controller;
 
-import com.trendyol.jdempotent.core.annotation.IdempotentResource;
 import com.jdempotent.example.demo.exception.InvalidEmailAddressException;
 import com.jdempotent.example.demo.model.SendEmailRequest;
 import com.jdempotent.example.demo.model.SendEmailResponse;
 import com.jdempotent.example.demo.service.MailSenderService;
+import com.trendyol.jdempotent.core.annotation.IdempotentResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class MailController {
@@ -26,8 +27,8 @@ public class MailController {
     private static final Logger logger = LoggerFactory.getLogger(MailController.class);
 
     @PostMapping("/send-email")
-    @IdempotentResource(cachePrefix = "MailController")
-    public ResponseEntity<SendEmailResponse> sendEmail(@RequestBody SendEmailRequest request){
+    @IdempotentResource(cachePrefix = "MailController.sendEmail")
+    public ResponseEntity<SendEmailResponse> sendEmail(@RequestBody SendEmailRequest request) {
         if (StringUtils.isEmpty(request.getEmail())) {
             throw new InvalidEmailAddressException();
         }
@@ -35,7 +36,26 @@ public class MailController {
         try {
             mailSenderService.sendMail(request);
         } catch (MessagingException e) {
-            logger.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e,request);
+            logger.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+        }
+
+        return new ResponseEntity(new SendEmailResponse("We will send your message"), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("v2/send-email")
+    @IdempotentResource(
+            cachePrefix = "MailController.sendEmailV2",
+            ttl = 1,
+            ttlTimeUnit = TimeUnit.MINUTES)
+    public ResponseEntity<SendEmailResponse> sendEmailV2(@RequestBody SendEmailRequest request) {
+        if (StringUtils.isEmpty(request.getEmail())) {
+            throw new InvalidEmailAddressException();
+        }
+
+        try {
+            mailSenderService.sendMail(request);
+        } catch (MessagingException e) {
+            logger.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
         }
 
         return new ResponseEntity(new SendEmailResponse("We will send your message"), HttpStatus.ACCEPTED);

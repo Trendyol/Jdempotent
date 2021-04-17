@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TestIdempotentResource {
-
     @IdempotentResource
     public void idempotentMethod(IdempotentTestPayload testObject) {
     }
@@ -17,7 +16,7 @@ public class TestIdempotentResource {
     }
 
     @IdempotentResource(cachePrefix = "TestIdempotentResource")
-    public void idempotentMethodWithThreeParamater(@IdempotentRequestPayload IdempotentTestPayload testObject, IdempotentTestPayload anotherObject, IdempotentTestPayload anotherObject2) {
+    public void idempotentMethodWithThreeParameter(@IdempotentRequestPayload IdempotentTestPayload testObject, IdempotentTestPayload anotherObject, IdempotentTestPayload anotherObject2) {
     }
 
     @IdempotentResource(cachePrefix = "TestIdempotentResource")

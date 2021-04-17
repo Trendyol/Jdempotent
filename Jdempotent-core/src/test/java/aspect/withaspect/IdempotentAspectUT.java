@@ -7,6 +7,7 @@ import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
+import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.reflect.Method;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -57,12 +59,12 @@ public class IdempotentAspectUT {
         idempotentAspect.execute(joinPoint);
 
         //then
-        verify(joinPoint, times(2)).getSignature();
-        verify(signature).getMethod();
+        verify(joinPoint, times(4)).getSignature();
+        verify(signature, times(3)).getMethod();
         verify(joinPoint).getTarget();
-        verify(idempotentRepository, times(1)).store(any(), any());
+        verify(idempotentRepository, times(1)).store(any(), any(), any(), any());
         verify(joinPoint).proceed();
-        verify(idempotentRepository, times(1)).setResponse(any(), any(), any());
+        verify(idempotentRepository, times(1)).setResponse(any(), any(), any(), any(), any());
     }
 
     @Test
@@ -86,8 +88,8 @@ public class IdempotentAspectUT {
         idempotentAspect.execute(joinPoint);
 
         //then
-        verify(joinPoint, times(2)).getSignature();
-        verify(signature).getMethod();
+        verify(joinPoint, times(4)).getSignature();
+        verify(signature, times(3)).getMethod();
         verify(joinPoint).getTarget();
         verify(idempotentRepository, times(0)).store(any(), any());
         verify(joinPoint, times(0)).proceed();
@@ -186,5 +188,32 @@ public class IdempotentAspectUT {
         verify(joinPoint).proceed();
         verify(idempotentRepository, times(0)).setResponse(any(), any(), any());
         verify(idempotentRepository, times(1)).remove(any());
+    }
+
+    @Test
+    public void given_a_payload_include_one_parameter_when_find_idempotent_request_then_return_idempotent_ignorable_wrapper() throws Throwable {
+        //given
+        ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
+        MethodSignature signature = mock(MethodSignature.class);
+        Method method = TestIdempotentResource.class.getMethod("idempotentMethod", IdempotentTestPayload.class);
+
+        IdempotentTestPayload payload = new IdempotentTestPayload("payload");
+        TestIdempotentResource testIdempotentResource = mock(TestIdempotentResource.class);
+
+        when(joinPoint.getSignature()).thenReturn(signature);
+        when(joinPoint.getArgs()).thenReturn(new Object[]{payload});
+        when(signature.getMethod()).thenReturn(method);
+        when(joinPoint.getTarget()).thenReturn(testIdempotentResource);
+        when(joinPoint.getTarget().getClass().getSimpleName()).thenReturn("TestIdempotentResource");
+        when(idempotentRepository.contains(any())).thenReturn(false);
+
+        //when
+        var idempotentRequestWrapper = idempotentAspect.findIdempotentRequestArg(joinPoint);
+
+        //then
+        IdempotentIgnorableWrapper requestWrapperRequest = (IdempotentIgnorableWrapper) idempotentRequestWrapper.getRequest();
+        assertEquals(requestWrapperRequest.getNonIgnoredFields().size(), 1);
+        assertEquals(requestWrapperRequest.getNonIgnoredFields().get("name"), "payload");
+        verify(joinPoint).getArgs();
     }
 }
