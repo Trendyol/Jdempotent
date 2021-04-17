@@ -16,7 +16,7 @@ Make your listener or etc idempotent easily
     <dependency>
         <groupId>com.trendyol</groupId>
         <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </dependency>
 ```
 

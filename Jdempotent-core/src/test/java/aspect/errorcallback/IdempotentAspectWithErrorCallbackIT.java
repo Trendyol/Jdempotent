@@ -7,6 +7,7 @@ import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import com.trendyol.jdempotent.core.model.IdempotencyKey;
+import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +41,9 @@ public class IdempotentAspectWithErrorCallbackIT {
         //given
         IdempotentTestPayload test = new IdempotentTestPayload();
         test.setName("another");
-        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(test), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put("name", "another");
+        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
         testIdempotentResource.idempotentMethodReturnArg(test);
@@ -54,7 +57,9 @@ public class IdempotentAspectWithErrorCallbackIT {
         //given
         IdempotentTestPayload test = new IdempotentTestPayload();
         test.setName("test");
-        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(test), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put("name", "test");
+        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
         testIdempotentResource.idempotentMethodReturnArg(test);
@@ -62,5 +67,4 @@ public class IdempotentAspectWithErrorCallbackIT {
         //then
         assertFalse(idempotentRepository.contains(idempotencyKey));
     }
-
 }

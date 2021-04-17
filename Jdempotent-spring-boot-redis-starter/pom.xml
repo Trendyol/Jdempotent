@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>Jdempotent-spring-boot-redis-starter</name>
     <packaging>jar</packaging>
     <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-spring-boot-redis-starter</url>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>com.trendyol</groupId>
             <artifactId>Jdempotent-core</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>

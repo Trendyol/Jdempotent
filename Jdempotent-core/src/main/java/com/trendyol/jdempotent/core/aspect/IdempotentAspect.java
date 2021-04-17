@@ -1,5 +1,6 @@
 package com.trendyol.jdempotent.core.aspect;
 
+import com.trendyol.jdempotent.core.annotation.IdempotentIgnore;
 import com.trendyol.jdempotent.core.annotation.IdempotentRequestPayload;
 import com.trendyol.jdempotent.core.annotation.IdempotentResource;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
@@ -9,6 +10,7 @@ import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import com.trendyol.jdempotent.core.generator.KeyGenerator;
 import com.trendyol.jdempotent.core.model.IdempotencyKey;
+import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,8 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -32,7 +36,6 @@ public class IdempotentAspect {
     private KeyGenerator keyGenerator;
     private IdempotentRepository idempotentRepository;
     private ErrorConditionalCallback errorCallback;
-
     private static final ThreadLocal<StringBuilder> stringBuilders =
             new ThreadLocal<>() {
                 @Override
@@ -121,6 +124,8 @@ public class IdempotentAspect {
         IdempotentRequestWrapper requestObject = findIdempotentRequestArg(pjp);
         String listenerName = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).cachePrefix();
         IdempotencyKey idempotencyKey = keyGenerator.generateIdempotentKey(requestObject, listenerName, stringBuilders.get(), messageDigests.get());
+        Long customTtl = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).ttl();
+        TimeUnit timeUnit = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).ttlTimeUnit();
 
         logger.debug(classAndMethodName + "starting for {}", requestObject);
 
@@ -131,7 +136,7 @@ public class IdempotentAspect {
         }
 
         logger.debug(classAndMethodName + "saved to cache with {}", idempotencyKey);
-        idempotentRepository.store(idempotencyKey, requestObject);
+        idempotentRepository.store(idempotencyKey, requestObject, customTtl, timeUnit);
         Object result;
         try {
             result = pjp.proceed();
@@ -146,7 +151,9 @@ public class IdempotentAspect {
             throw errorCallback.onErrorCustomException();
         }
 
-        idempotentRepository.setResponse(idempotencyKey, requestObject, new IdempotentResponseWrapper(result));
+
+        idempotentRepository.setResponse(idempotencyKey, requestObject, new IdempotentResponseWrapper(result), customTtl, timeUnit);
+
         logger.debug(classAndMethodName + "ended for {}", requestObject);
         return result;
     }
@@ -188,23 +195,23 @@ public class IdempotentAspect {
      * @param pjp
      * @return
      */
-    private IdempotentRequestWrapper findIdempotentRequestArg(ProceedingJoinPoint pjp) {
+    public IdempotentRequestWrapper findIdempotentRequestArg(ProceedingJoinPoint pjp) throws IllegalAccessException {
         Object[] args = pjp.getArgs();
         if (args.length == 0) {
             throw new IllegalStateException("Idempotent method not found");
         } else if (args.length == 1) {
-            return new IdempotentRequestWrapper(args[0]);
+            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args));
         } else {
             try {
                 MethodSignature signature = (MethodSignature) pjp.getSignature();
                 String methodName = signature.getMethod().getName();
                 Class<?>[] parameterTypes = signature.getMethod().getParameterTypes();
-                Annotation[][] annotations = pjp.getTarget().getClass().getMethod(methodName, parameterTypes)
-                        .getParameterAnnotations();
+                var method = pjp.getTarget().getClass().getMethod(methodName, parameterTypes);
+                Annotation[][] annotations = method.getParameterAnnotations();
                 for (int i = 0; i < args.length; i++) {
                     for (Annotation annotation : annotations[i]) {
                         if (annotation instanceof IdempotentRequestPayload) {
-                            return new IdempotentRequestWrapper(args[i]);
+                            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args));
                         }
                     }
                 }
@@ -215,6 +222,23 @@ public class IdempotentAspect {
         throw new IllegalStateException("Idempotent method not found");
     }
 
+    public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(Object[] args) throws IllegalAccessException {
+        var wrapper = new IdempotentIgnorableWrapper();
+        Field[] declaredFields = args[0].getClass().getDeclaredFields();
+        for (int i = 0; i < declaredFields.length; i++) {
+            declaredFields[i].setAccessible(true);
+            if (declaredFields[i].getDeclaredAnnotations().length == 0) {
+                wrapper.getNonIgnoredFields().put(declaredFields[i].getName(), declaredFields[i].get(args[0]));
+            } else {
+                for (Annotation annotation : declaredFields[i].getDeclaredAnnotations()) {
+                    if (!(annotation instanceof IdempotentIgnore)) {
+                        wrapper.getNonIgnoredFields().put(declaredFields[i].getName(), declaredFields[i].get(args[0]));
+                    }
+                }
+            }
+        }
+        return wrapper;
+    }
 
     /**
      * Sets the cache implementation
@@ -231,5 +255,4 @@ public class IdempotentAspect {
     public IdempotentRepository getIdempotentRepository() {
         return idempotentRepository;
     }
-
 }
