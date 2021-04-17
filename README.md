@@ -1,5 +1,6 @@
-[![Release Jdempotent-spring-boot-redis-starter](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml/badge.svg)](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml)
 # Jdempotent
+
+[![Release Jdempotent-spring-boot-redis-starter](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml/badge.svg)](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml)
 
 <p align="center">
   <img src="examples/logo.jpg">
