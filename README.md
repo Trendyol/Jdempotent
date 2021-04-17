@@ -1,3 +1,4 @@
+[![Release Jdempotent-spring-boot-redis-starter](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml/badge.svg)](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml)
 # Jdempotent
 
 <p align="center">
