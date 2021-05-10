@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnProperty(
-        value = "jdempotent.enable",
+        prefix="jdempotent", name = "enable",
         havingValue = "true",
         matchIfMissing = true)
 public class RedisConfigProperties {

@@ -18,7 +18,7 @@ Make your listener or etc idempotent easily
     <dependency>
         <groupId>com.trendyol</groupId>
         <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </dependency>
 ```
 
@@ -61,7 +61,7 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 }
 ```
 
-4 - Let's make redis configuration 
+4 - Let's make redis configuration.
 
 ```yaml
 jdempotent:
@@ -79,6 +79,19 @@ jdempotent:
       writeTimeoutSecond: 3
       maxRetryCount: 3
       expireTimeoutHour: 3
+```
+
+Also you can disable jdempotent any time for example you don't have circut breaker but your redis down etc.
+You can wish disable jdempotent with following configuration.
+
+```yaml
+  enable: false
+```
+
+```java
+@SpringBootApplication(
+      exclude = { RedisAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class }
+)
 ```
 
 ### Performance
