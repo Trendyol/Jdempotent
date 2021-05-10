@@ -18,7 +18,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration
 @ConditionalOnProperty(
-        value = "jdempotent.enable",
+        prefix="jdempotent", name = "enable",
         havingValue = "true",
         matchIfMissing = true)
 public class RedisSentinelConfiguration {
