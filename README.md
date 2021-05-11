@@ -8,11 +8,11 @@
 
 # Goal of this Jdempotent-spring-boot-starter
 
-Make your listener or etc idempotent easily
+Make your endpoints idempotent easily
 
 # Usage
 
-1 - First of all you need add dependency to pom.xml
+1 - First of all, you need to add a dependency to pom.xml
 
 ```xml
     <dependency>
@@ -22,7 +22,7 @@ Make your listener or etc idempotent easily
     </dependency>
 ```
 
-2 - You should add `@IdempotentResource` annotation to that you want to make idempotent resource, listener etc.
+2 - You should add `@IdempotentResource` annotation to the method that you want to make idempotent resource, listener etc.
 
 ```java
 @IdempotentResource(cachePrefix = "WelcomingListener")
@@ -43,7 +43,7 @@ public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
     }
 }
 ```
-3 - If you want custom error case, you should implement `ErrorConditionalCallback` like a following example
+3 - If you want to handle a custom error case, you need to implement `ErrorConditionalCallback` like the following example:
 
 ```java
 @Component
@@ -61,7 +61,7 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 }
 ```
 
-4 - Let's make redis configuration.
+4 - Let's make the redis configuration:
 
 ```yaml
 jdempotent:
@@ -81,8 +81,9 @@ jdempotent:
       expireTimeoutHour: 3
 ```
 
-Also you can disable jdempotent any time for example you don't have circut breaker but your redis down etc.
-You can wish disable jdempotent with following configuration.
+Please note that you can disable Jdempotent easily if you need to. 
+For example, assume that you don't have a circut breaker and your Redis is down.
+In that case, you can disable Jdempotent with the following configuration:
 
 ```yaml
   enable: false
@@ -96,7 +97,7 @@ You can wish disable jdempotent with following configuration.
 
 ### Performance
 
-As it is shown in the following image, the most cpu consuming part of jdempotent is getting a redis connection so we don't need to worry performance related issues.
+As it is shown in the following image, the most cpu consuming part of Jdempotent is getting a Redis connection so we don't need to worry performance related issues.
 
 <p align="center">
   <img src="examples/cpu-profiling.png">
