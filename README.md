@@ -98,6 +98,8 @@ jdempotent:
       query-timeout: 20000
       kv-timeout: 3000
 ```
+
+
 Also you can disable jdempotent any time for example you don't have circut breaker but your redis down etc.
 You can wish disable jdempotent with following configuration.
 
