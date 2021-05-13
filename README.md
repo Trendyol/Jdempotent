@@ -82,7 +82,7 @@ jdempotent:
       expireTimeoutHour: 3
 ```
 
-Let's make redis configuration.
+Let's make couchbase configuration.
 ```yaml
 jdempotent:
   enable: true
