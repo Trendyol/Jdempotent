@@ -3,18 +3,14 @@ jdempotent:
   cryptography:
     algorithm: MD5
   cache:
-    redis:
-      database: 9
-      password: "pass"
-      sentinelHostList: localhost
-      sentinelPort: 26379
-      sentinelMasterName: "master"
-      expirationTimeHour: 2
-      dialTimeoutSecond: 3
-      readTimeoutSecond: 3
-      writeTimeoutSecond: 3
-      maxRetryCount: 3
-      expireTimeoutHour: 84
+    couchbase:
+      connection-string: XXXXXXXX
+      password: XXXXXXXX
+      username: XXXXXXXX
+      bucket-name: XXXXXXXX
+      connect-timeout: 100000
+      query-timeout: 20000
+      kv-timeout: 3000
 
 email:
   from:

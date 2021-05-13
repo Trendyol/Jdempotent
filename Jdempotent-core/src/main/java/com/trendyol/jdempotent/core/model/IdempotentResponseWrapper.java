@@ -9,7 +9,9 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class IdempotentResponseWrapper implements Serializable {
 
-    private final Object response;
+    private Object response;
+
+    public IdempotentResponseWrapper(){}
 
     public IdempotentResponseWrapper(Object response) {
         this.response = response;
