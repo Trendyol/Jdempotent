@@ -61,7 +61,8 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 }
 ```
 
-4 - Let's make redis configuration.
+4 - Now you need to decide your datasource. That maybe inmemory,redis or couchbase.
+Let's make redis configuration.
 
 ```yaml
 jdempotent:
@@ -81,6 +82,22 @@ jdempotent:
       expireTimeoutHour: 3
 ```
 
+Let's make redis configuration.
+```yaml
+jdempotent:
+  enable: true
+  cryptography:
+    algorithm: MD5
+  cache:
+    couchbase:
+      connection-string: XXXXXXXX
+      password: XXXXXXXX
+      username: XXXXXXXX
+      bucket-name: XXXXXXXX
+      connect-timeout: 100000
+      query-timeout: 20000
+      kv-timeout: 3000
+```
 Also you can disable jdempotent any time for example you don't have circut breaker but your redis down etc.
 You can wish disable jdempotent with following configuration.
 
