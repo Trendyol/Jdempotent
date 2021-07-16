@@ -14,12 +14,21 @@ Make your endpoints idempotent easily
 
 1 - First of all, you need to add a dependency to pom.xml
 
+For Redis:
 ```xml
     <dependency>
         <groupId>com.trendyol</groupId>
         <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.6</version>
     </dependency>
+```
+For Couchbase
+```xml
+    <dependency>
+    <groupId>com.trendyol</groupId>
+    <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
+    <version>1.0.6</version>
+</dependency>
 ```
 
 2 - You should add `@IdempotentResource` annotation to the method that you want to make idempotent resource, listener etc.
@@ -61,7 +70,9 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 }
 ```
 
-4 - Let's make the redis configuration:
+4 - Let's make the configuration:
+
+For redis configuration:
 
 ```yaml
 jdempotent:
@@ -81,9 +92,28 @@ jdempotent:
       expireTimeoutHour: 3
 ```
 
+For couchbase configuration:
+
+```yaml
+jdempotent:
+  enable: true
+  cryptography:
+    algorithm: MD5
+  cache:
+    couchbase:
+      connection-string: XXXXXXXX
+      password: XXXXXXXX
+      username: XXXXXXXX
+      bucket-name: XXXXXXXX
+      connect-timeout: 100000
+      query-timeout: 20000
+      kv-timeout: 3000
+```
+
 Please note that you can disable Jdempotent easily if you need to. 
 For example, assume that you don't have a circut breaker and your Redis is down.
 In that case, you can disable Jdempotent with the following configuration:
+
 
 ```yaml
   enable: false
@@ -107,10 +137,3 @@ As it is shown in the following image, the most cpu consuming part of Jdempotent
 [Jdempotent Medium Article](https://medium.com/trendyol-tech/an-idempotency-library-jdempotent-5cd2cd0b76ff) <br/>
 [Jdempotent-core Javadoc](https://memojja.github.io/jdempotent-core/index.html) <br/>
 [Jdempotent-spring-boot-redis-starter Javadoc](https://memojja.github.io/jdempotent-spring-boot-redis-starter/index.html)
-
-### TODOS
-- [ ] Disable request&response configgi
-- [ ] Write examples under the examples folders
-- [ ] Support multiple request paylaod as a paramater
-- [ ] Ignore a throwing custom exception like ErrorConditionalCallback
-- [ ] Support multiple datasources
