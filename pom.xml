@@ -4,7 +4,7 @@
     <groupId>com.trendyol</groupId>
     <artifactId>jdempotent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
     <name>Jdempotent</name>
     <url>https://github.com/Trendyol/Jdempotent</url>
     <description>Jdempotent</description>
@@ -44,6 +44,7 @@
     <modules>
         <module>Jdempotent-core</module>
         <module>Jdempotent-spring-boot-redis-starter</module>
+        <module>Jdempotent-spring-boot-couchbase-starter</module>
     </modules>
 
     <dependencyManagement>

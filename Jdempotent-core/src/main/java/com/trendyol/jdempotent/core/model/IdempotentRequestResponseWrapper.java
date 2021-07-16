@@ -9,8 +9,10 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class IdempotentRequestResponseWrapper implements Serializable {
-    private final IdempotentRequestWrapper request;
+    private IdempotentRequestWrapper request;
     private IdempotentResponseWrapper response = null;
+
+    public IdempotentRequestResponseWrapper(){}
 
     public IdempotentRequestResponseWrapper(IdempotentRequestWrapper request) {
         this.request = request;

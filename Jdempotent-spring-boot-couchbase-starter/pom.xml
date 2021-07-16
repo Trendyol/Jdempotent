@@ -1,16 +1,15 @@
-<?xml version="1.0"?>
-<project
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.trendyol</groupId>
-    <artifactId>Jdempotent-core</artifactId>
+    <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
     <version>1.0.6</version>
-    <name>Jdempotent-core</name>
+    <name>Jdempotent-spring-boot-couchbase-starter</name>
     <packaging>jar</packaging>
-    <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-core</url>
-    <description>Jdempotent-core</description>
+    <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-spring-boot-couchbase-starter</url>
+    <description>Jdempotent-spring-boot-couchbase-starter</description>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -51,33 +50,39 @@
     </properties>
 
     <dependencies>
+        <!-- Core -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${spring.framework.version}</version>
-            <optional>true</optional>
+            <groupId>com.trendyol</groupId>
+            <artifactId>Jdempotent-core</artifactId>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
-            <groupId>de.siegmar</groupId>
-            <artifactId>logback-gelf</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
-            <version>${spring.framework.version}</version>
-            <optional>true</optional>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.4</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${spring.boot.version}</version>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>2.2.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+
+        <!-- Datastore -->
+        <dependency>
+            <groupId>com.couchbase.client</groupId>
+            <artifactId>java-client</artifactId>
+            <version>3.0.10</version>
         </dependency>
 
         <!-- Unit Test Dependencies-->
@@ -85,6 +90,17 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>3.8.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -105,7 +121,6 @@
             <version>${version.mockito}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <profiles>
@@ -188,6 +203,7 @@
             </build>
         </profile>
     </profiles>
+
 
     <build>
         <plugins>
@@ -285,5 +301,16 @@
             <url>https://jcenter.bintray.com/</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>

@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.trendyol.jdempotent.couchbase.CouchbaseConfig,\
+com.trendyol.jdempotent.couchbase.CouchbaseBeanConfig,\
+com.trendyol.jdempotent.couchbase.ApplicationConfig

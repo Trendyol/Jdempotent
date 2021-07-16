@@ -58,7 +58,7 @@
         </dependency>
         <dependency>
             <groupId>com.trendyol</groupId>
-            <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
+            <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
             <version>1.0.6</version>
         </dependency>
     </dependencies>
