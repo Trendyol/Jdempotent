@@ -1,13 +1,14 @@
+package com.trendyol.jdempotent.couchbase;
+
 import com.couchbase.client.java.Collection;
 import com.couchbase.client.java.kv.ExistsResult;
 import com.couchbase.client.java.kv.GetResult;
+import com.couchbase.client.java.kv.MutationResult;
 import com.couchbase.client.java.kv.UpsertOptions;
 import com.trendyol.jdempotent.core.model.IdempotencyKey;
 import com.trendyol.jdempotent.core.model.IdempotentRequestResponseWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
-import com.trendyol.jdempotent.couchbase.CouchbaseConfig;
-import com.trendyol.jdempotent.couchbase.CouchbaseIdempotentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +16,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertFalse;
@@ -88,13 +89,13 @@ public class CouchbaseIdempotentRepositoryTest {
     IdempotentRequestResponseWrapper wrapper = new IdempotentRequestResponseWrapper();
     GetResult getResult = mock(GetResult.class);
     when(getResult.contentAs(IdempotentRequestResponseWrapper.class)).thenReturn(wrapper);
-    when(collection.get(idempotencyKey.getKeyValue())).thenReturn(getResult);
+    when(collection.get(eq(idempotencyKey.getKeyValue()),any())).thenReturn(getResult);
 
     //When
     IdempotentResponseWrapper result = couchbaseIdempotentRepository.getResponse(idempotencyKey);
 
     //Then
-    verify(collection, times(1)).get(idempotencyKey.getKeyValue());
+    verify(collection, times(1)).get(eq(idempotencyKey.getKeyValue()),any());
     assertEquals(result, wrapper.getResponse());
   }
 
@@ -121,10 +122,7 @@ public class CouchbaseIdempotentRepositoryTest {
     IdempotentRequestWrapper wrapper = new IdempotentRequestWrapper();
     Long ttl = 1L;
     TimeUnit timeUnit = TimeUnit.DAYS;
-    Duration duration = Duration.ofDays(1L);
     IdempotentRequestResponseWrapper responseWrapper = new IdempotentRequestResponseWrapper(wrapper);
-    /*var mockUpsertOption = Mockito.mockStatic(UpsertOptions.class);
-    when(((UpsertOptions)mockUpsertOption)).thenReturn((UpsertOptions) mockUpsertOption);*/
 
     //When
     couchbaseIdempotentRepository.store(idempotencyKey, wrapper, ttl, timeUnit);
@@ -135,6 +133,48 @@ public class CouchbaseIdempotentRepositoryTest {
         upsertOptionCaptor.capture());
     IdempotentRequestResponseWrapper idempotentRequestResponseWrapper = captor.getValue();
     assertEquals(idempotentRequestResponseWrapper.getResponse(), responseWrapper.getResponse());
-    //verify((UpsertOptions)mockUpsertOption, times(1)).expiry(duration);
+  }
+
+
+  @Test
+  public void setResponse() {
+    //Given
+    IdempotencyKey idempotencyKey = new IdempotencyKey("key");
+    IdempotentRequestResponseWrapper wrapper = new IdempotentRequestResponseWrapper();
+    GetResult getResult = mock(GetResult.class);
+    ExistsResult existsResult = mock(ExistsResult.class);
+    when(existsResult.exists()).thenReturn(true);
+    when(getResult.contentAs(IdempotentRequestResponseWrapper.class)).thenReturn(wrapper);
+
+    when(collection.get(eq(idempotencyKey.getKeyValue()),any())).thenReturn(getResult);
+    when(collection.exists(idempotencyKey.getKeyValue())).thenReturn(existsResult);
+    when(collection.upsert(idempotencyKey.getKeyValue(),wrapper)).thenReturn(mock(MutationResult.class));
+    //When
+    couchbaseIdempotentRepository.setResponse(idempotencyKey,mock(IdempotentRequestWrapper.class),
+            mock(IdempotentResponseWrapper.class));
+
+    //Then
+    verify(collection, times(1)).get(eq(idempotencyKey.getKeyValue()),any());
+  }
+
+  @Test
+  public void setResponse_when_given_a_ttl() {
+    //Given
+    IdempotencyKey idempotencyKey = new IdempotencyKey("key");
+    IdempotentRequestResponseWrapper wrapper = new IdempotentRequestResponseWrapper();
+    GetResult getResult = mock(GetResult.class);
+    ExistsResult existsResult = mock(ExistsResult.class);
+    when(existsResult.exists()).thenReturn(true);
+    when(getResult.contentAs(IdempotentRequestResponseWrapper.class)).thenReturn(wrapper);
+    when(getResult.expiry()).thenReturn(Optional.of(mock(Duration.class)));
+    when(collection.get(eq(idempotencyKey.getKeyValue()),any())).thenReturn(getResult);
+    when(collection.exists(idempotencyKey.getKeyValue())).thenReturn(existsResult);
+    when(collection.upsert(eq(idempotencyKey.getKeyValue()),eq(wrapper),any())).thenReturn(mock(MutationResult.class));
+    //When
+    couchbaseIdempotentRepository.setResponse(idempotencyKey,mock(IdempotentRequestWrapper.class),
+            mock(IdempotentResponseWrapper.class),5L,TimeUnit.DAYS);
+
+    //Then
+    verify(collection, times(1)).get(eq(idempotencyKey.getKeyValue()),any());
   }
 }

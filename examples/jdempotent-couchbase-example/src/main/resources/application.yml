@@ -3,6 +3,7 @@ jdempotent:
   cryptography:
     algorithm: MD5
   cache:
+    persistReqRes: false
     couchbase:
       connection-string: XXXXXXXX
       password: XXXXXXXX

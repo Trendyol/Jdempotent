@@ -1,29 +1,8 @@
 package com.trendyol.jdempotent.couchbase;
 
-import com.couchbase.client.core.deps.io.netty.channel.epoll.EpollEventLoopGroup;
-import com.couchbase.client.core.env.CompressionConfig;
-import com.couchbase.client.core.env.IoConfig;
-import com.couchbase.client.core.env.IoEnvironment;
-import com.couchbase.client.core.env.LoggerConfig;
-import com.couchbase.client.core.env.SecurityConfig;
-import com.couchbase.client.core.env.TimeoutConfig;
-import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.ClusterOptions;
-import com.couchbase.client.java.Collection;
-import com.couchbase.client.java.codec.JacksonJsonSerializer;
-import com.couchbase.client.java.env.ClusterEnvironment;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Duration;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.apache.commons.lang3.SystemUtils;
-import org.springframework.context.annotation.Primary;
 
 @ConditionalOnProperty(
         prefix="jdempotent", name = "enable",
@@ -45,7 +24,7 @@ public class CouchbaseConfig {
     private Long queryTimeout;
     @Value("${jdempotent.cache.couchbase.kv-timeout}")
     private Long kvTimeout;
-    @Value("${jdempotent.cache.persistReqRes:true}")
+    @Value("${jdempotent.cache.persistReqRes:false}")
     private Boolean persistReqRes;
 
     public String getConnectionString() {
