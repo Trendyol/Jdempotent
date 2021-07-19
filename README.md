@@ -15,6 +15,7 @@ Make your endpoints idempotent easily
 1 - First of all, you need to add a dependency to pom.xml
 
 For Redis:
+
 ```xml
     <dependency>
         <groupId>com.trendyol</groupId>
@@ -22,9 +23,10 @@ For Redis:
         <version>1.0.6</version>
     </dependency>
 ```
-For Couchbase
+For Couchbase:
+
 ```xml
-    <dependency>
+<dependency>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
     <version>1.0.6</version>
@@ -137,3 +139,21 @@ As it is shown in the following image, the most cpu consuming part of Jdempotent
 [Jdempotent Medium Article](https://medium.com/trendyol-tech/an-idempotency-library-jdempotent-5cd2cd0b76ff) <br/>
 [Jdempotent-core Javadoc](https://memojja.github.io/jdempotent-core/index.html) <br/>
 [Jdempotent-spring-boot-redis-starter Javadoc](https://memojja.github.io/jdempotent-spring-boot-redis-starter/index.html)
+
+### Support
+[memojja's twitter](https://twitter.com/memojja) <br/>
+
+### Licence
+[MIT Licence](https://opensource.org/licenses/MIT) <br/>
+
+## Contributing
+
+1. Fork it ( https://github.com/Trendyol/Jdempotent/fork )
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create a new Pull Request
+
+## Contributors
+
+- [memojja](https://github.com/memojja) Mehmet ARI - creator, maintainer
