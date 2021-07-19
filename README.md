@@ -12,7 +12,7 @@ Make your endpoints idempotent easily
 
 # Usage
 
-1 - First of all, you need to add a dependency to pom.xml
+1. First of all, you need to add a dependency to pom.xml
 
 For Redis:
 
@@ -33,7 +33,7 @@ For Couchbase:
 </dependency>
 ```
 
-2 - You should add `@IdempotentResource` annotation to the method that you want to make idempotent resource, listener etc.
+2. You should add `@IdempotentResource` annotation to the method that you want to make idempotent resource, listener etc.
 
 ```java
 @IdempotentResource(cachePrefix = "WelcomingListener")
@@ -54,7 +54,7 @@ public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
     }
 }
 ```
-3 - If you want to handle a custom error case, you need to implement `ErrorConditionalCallback` like the following example:
+3. If you want to handle a custom error case, you need to implement `ErrorConditionalCallback` like the following example:
 
 ```java
 @Component
@@ -72,7 +72,7 @@ public class AspectConditionalCallback implements ErrorConditionalCallback {
 }
 ```
 
-4 - Let's make the configuration:
+4. Let's make the configuration:
 
 For redis configuration:
 
@@ -127,7 +127,7 @@ In that case, you can disable Jdempotent with the following configuration:
 )
 ```
 
-### Performance
+## Performance
 
 As it is shown in the following image, the most cpu consuming part of Jdempotent is getting a Redis connection so we don't need to worry performance related issues.
 
@@ -135,15 +135,18 @@ As it is shown in the following image, the most cpu consuming part of Jdempotent
   <img src="examples/cpu-profiling.png">
 </p>
 
-### Docs
+# Docs
+
 [Jdempotent Medium Article](https://medium.com/trendyol-tech/an-idempotency-library-jdempotent-5cd2cd0b76ff) <br/>
 [Jdempotent-core Javadoc](https://memojja.github.io/jdempotent-core/index.html) <br/>
 [Jdempotent-spring-boot-redis-starter Javadoc](https://memojja.github.io/jdempotent-spring-boot-redis-starter/index.html)
 
-### Support
+## Support
+
 [memojja's twitter](https://twitter.com/memojja) <br/>
 
-### Licence
+## Licence
+
 [MIT Licence](https://opensource.org/licenses/MIT) <br/>
 
 ## Contributing
