@@ -17,11 +17,11 @@ Make your endpoints idempotent easily
 For Redis:
 
 ```xml
-    <dependency>
-        <groupId>com.trendyol</groupId>
-        <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-        <version>1.0.6</version>
-    </dependency>
+<dependency>
+    <groupId>com.trendyol</groupId>
+    <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
+    <version>1.0.6</version>
+</dependency>
 ```
 For Couchbase:
 
