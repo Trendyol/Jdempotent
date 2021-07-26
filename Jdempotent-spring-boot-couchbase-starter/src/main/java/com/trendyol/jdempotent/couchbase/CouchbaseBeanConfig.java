@@ -12,6 +12,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.time.Duration;
 
@@ -29,6 +30,7 @@ public class CouchbaseBeanConfig {
     }
 
     @Bean
+    @Primary
     public Cluster cluster(ObjectMapper objectMapper) {
         var builder = ClusterEnvironment.builder();
         if (SystemUtils.IS_OS_LINUX) {
@@ -60,6 +62,7 @@ public class CouchbaseBeanConfig {
     }
 
     @Bean
+    @Primary
     public Collection collection(ObjectMapper objectMapper) {
         return cluster(objectMapper).bucket(couchbaseConfig.getBucketName()).defaultCollection();
     }
