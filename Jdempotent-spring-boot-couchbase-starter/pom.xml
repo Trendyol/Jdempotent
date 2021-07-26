@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <name>Jdempotent-spring-boot-couchbase-starter</name>
     <packaging>jar</packaging>
     <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-spring-boot-couchbase-starter</url>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>com.trendyol</groupId>
             <artifactId>Jdempotent-core</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
