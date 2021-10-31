@@ -1,5 +1,6 @@
 package com.trendyol.jdempotent.core.aspect;
 
+import com.trendyol.jdempotent.core.annotation.IdempotentHeaderKey;
 import com.trendyol.jdempotent.core.annotation.IdempotentIgnore;
 import com.trendyol.jdempotent.core.annotation.IdempotentRequestPayload;
 import com.trendyol.jdempotent.core.annotation.IdempotentResource;
@@ -25,6 +26,7 @@ import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 
 /**
@@ -33,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 public class IdempotentAspect {
     private static final Logger logger = LoggerFactory.getLogger(IdempotentAspect.class);
-    private KeyGenerator keyGenerator;
+    private final KeyGenerator keyGenerator;
     private IdempotentRepository idempotentRepository;
     private ErrorConditionalCallback errorCallback;
     private static final ThreadLocal<StringBuilder> stringBuilders =
@@ -157,6 +159,59 @@ public class IdempotentAspect {
         logger.debug(classAndMethodName + "ended for {}", requestObject);
         return result;
     }
+    
+    /**
+     * An advice to make sure it returns at the same time for all subsequent calls
+     *
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
+    @Around("@annotation(com.trendyol.jdempotent.core.annotation.IdempotentHeaderKey)")
+    public Object executeKey(ProceedingJoinPoint pjp) throws Throwable,IllegalStateException {
+        IdempotencyKey idempotencyKey = new IdempotencyKey();
+        String classAndMethodName = generateLogPrefixForIncomingEvent(pjp);
+        IdempotentRequestWrapper requestObject = findIdempotentRequestArg(pjp);
+        String idempotentHeaderKey = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentHeaderKey.class).uuid();
+        if (idempotentHeaderKey.equalsIgnoreCase("x-idempotency-key"))
+        {
+            idempotencyKey = keyGenerator.generateIdempotentKey(findIdempotentHeaderKeyRequestArg(pjp));
+        }        
+        Long customTtl = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentHeaderKey.class).ttl();
+        TimeUnit timeUnit = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentHeaderKey.class).ttlTimeUnit();
+
+        logger.debug(classAndMethodName + "starting for {}", requestObject);
+
+        if (idempotentRepository.contains(idempotencyKey)) {
+            Object response = retrieveResponse(idempotencyKey);
+            logger.debug(classAndMethodName + "ended up reading from cache for {}", requestObject);
+            logger.debug(classAndMethodName + "An existing Idempotency Key exist in the cache for {}", requestObject);
+            //return response;
+            throw new IllegalStateException("Duplicated Idempotency Key was found in the cache");
+        }
+
+        logger.debug(classAndMethodName + "saved to cache with {}", idempotencyKey);
+        idempotentRepository.store(idempotencyKey, requestObject, customTtl, timeUnit);
+        Object result;
+        try {
+            result = pjp.proceed();
+        } catch (Exception e) {
+            logger.debug(classAndMethodName + "deleted from cache with {} . Exception : {}", idempotencyKey, e);
+            idempotentRepository.remove(idempotencyKey);
+            throw e;
+        }
+
+        if (errorCallback != null && errorCallback.onErrorCondition(result)) {
+            idempotentRepository.remove(idempotencyKey);
+            throw errorCallback.onErrorCustomException();
+        }
+
+
+        idempotentRepository.setResponse(idempotencyKey, requestObject, new IdempotentResponseWrapper(result), customTtl, timeUnit);
+
+        logger.debug(classAndMethodName + "ended for {}", requestObject);
+        return result;
+    }
 
     /**
      * Generates log prefix for the incoming event
@@ -197,11 +252,26 @@ public class IdempotentAspect {
      */
     public IdempotentRequestWrapper findIdempotentRequestArg(ProceedingJoinPoint pjp) throws IllegalAccessException {
         Object[] args = pjp.getArgs();
+        boolean isValidUUID = false;
+        int index;
+        for(index=0;index<args.length;index++){
+            logger.debug(args[index].toString());   
+            logger.debug("isValidUUID "+ isValidUUID(args[index].toString()));
+            isValidUUID = isValidUUID(args[index].toString());
+            if(isValidUUID){  
+                //breaking the loop  
+                break;  
+            } 
+        }
         if (args.length == 0) {
             throw new IllegalStateException("Idempotent method not found");
-        } else if (args.length == 1) {
+        } else if (isValidUUID) {
+            return new IdempotentRequestWrapper(getIdempotentNonIgnorableHeaderKeyWrapper(args[index]));
+        }
+        else if (args.length == 1) {
             return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args));
-        } else {
+        }
+        else {
             try {
                 MethodSignature signature = (MethodSignature) pjp.getSignature();
                 String methodName = signature.getMethod().getName();
@@ -221,6 +291,34 @@ public class IdempotentAspect {
         }
         throw new IllegalStateException("Idempotent method not found");
     }
+    
+    /**
+     * Finds the idempotent header key object
+     *
+     * @param pjp
+     * @return
+     */
+    public String findIdempotentHeaderKeyRequestArg(ProceedingJoinPoint pjp) throws IllegalAccessException {
+        Object[] args = pjp.getArgs();
+        boolean isValidUUID = false;
+        int index;
+        if (args.length == 0) {
+            throw new IllegalStateException("Idempotent method not found");
+        } else {
+            for(index=0;index<args.length;index++){
+                logger.debug(args[index].toString());   
+                logger.debug("isValidUUID "+ isValidUUID(args[index].toString()));
+                isValidUUID = isValidUUID(args[index].toString());
+                if(isValidUUID){  
+                    //breaking the loop  
+                    break;  
+                } 
+            }
+        }               
+        return args[index].toString();                
+    }
+    
+    
 
     public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(Object[] args) throws IllegalAccessException {
         var wrapper = new IdempotentIgnorableWrapper();
@@ -233,6 +331,24 @@ public class IdempotentAspect {
                 for (Annotation annotation : declaredFields[i].getDeclaredAnnotations()) {
                     if (!(annotation instanceof IdempotentIgnore)) {
                         wrapper.getNonIgnoredFields().put(declaredFields[i].getName(), declaredFields[i].get(args[0]));
+                    }
+                }
+            }
+        }
+        return wrapper;
+    }
+    
+    public IdempotentIgnorableWrapper getIdempotentNonIgnorableHeaderKeyWrapper(Object arg) throws IllegalAccessException {
+        var wrapper = new IdempotentIgnorableWrapper();
+        Field[] declaredFields = arg.getClass().getDeclaredFields();
+        for (int i = 0; i < declaredFields.length; i++) {
+            declaredFields[i].setAccessible(true);
+            if (declaredFields[i].getDeclaredAnnotations().length == 0) {
+                wrapper.getNonIgnoredFields().put(declaredFields[i].getName(), declaredFields[i].get(arg));
+            } else {
+                for (Annotation annotation : declaredFields[i].getDeclaredAnnotations()) {
+                    if (!(annotation instanceof IdempotentIgnore)) {
+                        wrapper.getNonIgnoredFields().put(declaredFields[i].getName(), declaredFields[i].get(arg));
                     }
                 }
             }
@@ -254,5 +370,15 @@ public class IdempotentAspect {
      */
     public IdempotentRepository getIdempotentRepository() {
         return idempotentRepository;
+    }
+    
+    private final static Pattern UUID_REGEX_PATTERN =
+        Pattern.compile("^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$");
+ 
+    public static boolean isValidUUID(String str) {
+        if (str == null) {
+            return false;
+        }
+        return UUID_REGEX_PATTERN.matcher(str).matches();
     }
 }
