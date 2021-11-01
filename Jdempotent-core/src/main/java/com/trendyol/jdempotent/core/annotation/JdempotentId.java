@@ -8,16 +8,6 @@ import java.lang.annotation.Target;
 /**
  *
  * Places the generated idempotency identifier into annotated field.
- * <pre>{@code
- *
- * public class JavadocTest {
- *
- *  @JdempotentId
- *  private String jdempotentId;
- *  private Object data;
- *
- * }
- * }</pre>
  *
  */
 @Target(ElementType.FIELD)
