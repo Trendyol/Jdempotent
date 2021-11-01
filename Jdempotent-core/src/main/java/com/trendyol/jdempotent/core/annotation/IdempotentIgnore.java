@@ -7,8 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * That annotation needs to ignore annotation field
  *
  */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface IdempotentIgnore {
