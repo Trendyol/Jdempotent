@@ -138,4 +138,21 @@ public class IdempotentAspectIT {
         //then
         testIdempotentResource.methodWithTwoParamater(test, test1);
     }
+
+    @Test
+    public void given_jdempotent_id_then_args_should_have_idempotency_id() throws NoSuchAlgorithmException {
+        //given
+        IdempotentTestPayload test = new IdempotentTestPayload();
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put("name", null);
+
+        IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+
+        //when
+        testIdempotentResource.idempotentMethod(test);
+
+        //then
+        assertTrue(idempotentRepository.contains(idempotencyKey));
+    }
+
 }

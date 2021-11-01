@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-core</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <name>Jdempotent-core</name>
     <packaging>jar</packaging>
     <url>https://github.com/Trendyol/Jdempotent/tree/master/Jdempotent-core</url>

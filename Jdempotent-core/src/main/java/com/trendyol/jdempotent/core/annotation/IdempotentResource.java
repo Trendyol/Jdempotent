@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
  * Add to the methods that need to be idempotent.
  *
  */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IdempotentResource {
 
