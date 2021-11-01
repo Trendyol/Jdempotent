@@ -1,8 +1,6 @@
 package com.trendyol.jdempotent.core.aspect;
 
-import com.trendyol.jdempotent.core.annotation.IdempotentIgnore;
-import com.trendyol.jdempotent.core.annotation.IdempotentRequestPayload;
-import com.trendyol.jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.annotation.*;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
 import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
@@ -136,6 +134,7 @@ public class IdempotentAspect {
         }
 
         logger.debug(classAndMethodName + "saved to cache with {}", idempotencyKey);
+        setJdempotentId(pjp.getArgs(),idempotencyKey.getKeyValue());
         idempotentRepository.store(idempotencyKey, requestObject, customTtl, timeUnit);
         Object result;
         try {
@@ -220,6 +219,32 @@ public class IdempotentAspect {
             }
         }
         throw new IllegalStateException("Idempotent method not found");
+    }
+
+    /**
+     * That function validate and set generated idempotency identifier into annotated field.
+     *
+     * @param args
+     * @param idempotencyKey
+     * @return
+     * @throws IllegalAccessException
+     */
+    public void setJdempotentId(Object[] args, String idempotencyKey) throws IllegalAccessException {
+        var wrapper = new IdempotentIgnorableWrapper();
+        Field[] declaredFields = args[0].getClass().getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            declaredField.setAccessible(true);
+            if (declaredField.getDeclaredAnnotations().length == 0) {
+                wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args[0]));
+            } else {
+                for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
+                    if (annotation instanceof JdempotentId) {
+                        wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args[0]));
+                        declaredField.set(args[0], idempotencyKey);
+                    }
+                }
+            }
+        }
     }
 
     public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(Object[] args) throws IllegalAccessException {

@@ -20,7 +20,7 @@ For Redis:
 <dependency>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
 </dependency>
 ```
 For Couchbase:
@@ -29,7 +29,7 @@ For Couchbase:
 <dependency>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
 </dependency>
 ```
 
@@ -54,6 +54,20 @@ public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
     }
 }
 ```
+
+If want that idempotencyId in your payload. Put `@JdempotentId` annotation that places the generated idempotency identifier into annotated field.
+Can be thought of as @Id annotation in jpa
+
+For example:
+
+```java
+public class IdempotentPaylaod {
+ @JdempotentId
+ private String jdempotentId;
+ private Object data;
+}
+```
+
 3. If you want to handle a custom error case, you need to implement `ErrorConditionalCallback` like the following example:
 
 ```java
