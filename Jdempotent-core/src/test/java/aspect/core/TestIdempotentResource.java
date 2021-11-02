@@ -36,4 +36,8 @@ public class TestIdempotentResource {
         return testObject;
     }
 
+    @IdempotentResource
+    public String idempotencyKeyAsString(@IdempotentRequestPayload String idempotencyKey) {
+        return idempotencyKey;
+    }
 }
