@@ -199,7 +199,7 @@ public class IdempotentAspect {
         if (args.length == 0) {
             throw new IllegalStateException("Idempotent method not found");
         } else if (args.length == 1) {
-            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args));
+            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args[0]));
         } else {
             try {
                 MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -210,7 +210,7 @@ public class IdempotentAspect {
                 for (int i = 0; i < args.length; i++) {
                     for (Annotation annotation : annotations[i]) {
                         if (annotation instanceof IdempotentRequestPayload) {
-                            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args));
+                            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args[i]));
                         }
                     }
                 }
@@ -246,17 +246,21 @@ public class IdempotentAspect {
         }
     }
 
-    public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(Object[] args) throws IllegalAccessException {
+    public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(Object args) throws IllegalAccessException {
         var wrapper = new IdempotentIgnorableWrapper();
-        Field[] declaredFields = args[0].getClass().getDeclaredFields();
-        for (int i = 0; i < declaredFields.length; i++) {
-            declaredFields[i].setAccessible(true);
-            if (declaredFields[i].getDeclaredAnnotations().length == 0) {
-                wrapper.getNonIgnoredFields().put(declaredFields[i].getName(), declaredFields[i].get(args[0]));
+        Field[] declaredFields = args.getClass().getDeclaredFields();
+        if(args instanceof String){
+            wrapper.getNonIgnoredFields().put(args.toString(), args);
+            return wrapper;
+        }
+        for (Field declaredField : declaredFields) {
+            declaredField.setAccessible(true);
+            if (declaredField.getDeclaredAnnotations().length == 0) {
+                wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args));
             } else {
-                for (Annotation annotation : declaredFields[i].getDeclaredAnnotations()) {
+                for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
                     if (!(annotation instanceof IdempotentIgnore)) {
-                        wrapper.getNonIgnoredFields().put(declaredFields[i].getName(), declaredFields[i].get(args[0]));
+                        wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args));
                     }
                 }
             }
