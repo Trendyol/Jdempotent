@@ -155,4 +155,20 @@ public class IdempotentAspectIT {
         assertTrue(idempotentRepository.contains(idempotencyKey));
     }
 
+    @Test
+    public void given_new_payload_as_string_when_trigger_aspect_then_that_will_be_aviable_in_repository() throws NoSuchAlgorithmException {
+        //given
+        String idempotencyKey = "key";
+        IdempotentTestPayload test = new IdempotentTestPayload();
+        IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
+        wrapper.getNonIgnoredFields().put(idempotencyKey, idempotencyKey);
+        IdempotencyKey key = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
+
+        //when
+        testIdempotentResource.idempotencyKeyAsString(idempotencyKey);
+
+        //then
+        assertTrue(idempotentRepository.contains(key));
+    }
+
 }

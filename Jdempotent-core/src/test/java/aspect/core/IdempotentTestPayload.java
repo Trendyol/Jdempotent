@@ -1,15 +1,11 @@
 package aspect.core;
 
 import com.trendyol.jdempotent.core.annotation.IdempotentIgnore;
-import com.trendyol.jdempotent.core.annotation.JdempotentId;
 
 public class IdempotentTestPayload {
     private String name;
     @IdempotentIgnore
     private Long age;
-
-    @JdempotentId
-    private String jdempotentId;
 
     public IdempotentTestPayload() {
     }
