@@ -8,9 +8,8 @@ import java.util.concurrent.TimeUnit;
  * Add to the methods that need to be idempotent.
  *
  */
-@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IdempotentResource {
+public @interface JdempotentResource {
 
     /**
      * Prefix value to make hash value more collider
