@@ -3,7 +3,7 @@ package aspect.withaspect;
 import aspect.core.IdempotentTestPayload;
 import aspect.core.TestException;
 import aspect.core.TestIdempotentResource;
-import com.trendyol.jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
@@ -40,12 +40,12 @@ public class IdempotentAspectIT {
 
     @Test
     public void given_aop_context_then_run_with_aop_context() {
-        IdempotentResource idempotentResource = TestIdempotentResource.class.getDeclaredMethods()[0].getAnnotation(IdempotentResource.class);
+        JdempotentResource jdempotentResource = TestIdempotentResource.class.getDeclaredMethods()[0].getAnnotation(JdempotentResource.class);
 
         assertNotEquals(testIdempotentResource.getClass(), TestIdempotentResource.class);
         assertTrue(AopUtils.isAopProxy(testIdempotentResource));
         assertTrue(AopUtils.isCglibProxy(testIdempotentResource));
-        assertNotNull(idempotentResource);
+        assertNotNull(jdempotentResource);
 
         assertEquals(AopProxyUtils.ultimateTargetClass(testIdempotentResource), TestIdempotentResource.class);
         assertEquals(AopTestUtils.getTargetObject(testIdempotentResource).getClass(), TestIdempotentResource.class);
@@ -114,7 +114,7 @@ public class IdempotentAspectIT {
         IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
-        testIdempotentResource.idempotentMethodWithThreeParamaterAndMultipleIdempotentRequestPayloadAnnotation(test, test1, test2);
+        testIdempotentResource.idempotentMethodWithThreeParamaterAndMultipleJdempotentRequestPayloadAnnotation(test, test1, test2);
 
         //then
         assertTrue(idempotentRepository.contains(idempotencyKey));

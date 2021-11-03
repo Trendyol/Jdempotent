@@ -1,43 +1,43 @@
 package aspect.core;
 
-import com.trendyol.jdempotent.core.annotation.IdempotentRequestPayload;
-import com.trendyol.jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.annotation.JdempotentRequestPayload;
+import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TestIdempotentResource {
-    @IdempotentResource
+    @JdempotentResource
     public void idempotentMethod(IdempotentTestPayload testObject) {
     }
 
-    @IdempotentResource(cachePrefix = "TestIdempotentResource")
+    @JdempotentResource(cachePrefix = "TestIdempotentResource")
     public void idempotentMethodThrowingARuntimeException(IdempotentTestPayload testObject) {
         throw new TestException();
     }
 
-    @IdempotentResource(cachePrefix = "TestIdempotentResource")
-    public void idempotentMethodWithThreeParameter(@IdempotentRequestPayload IdempotentTestPayload testObject, IdempotentTestPayload anotherObject, IdempotentTestPayload anotherObject2) {
+    @JdempotentResource(cachePrefix = "TestIdempotentResource")
+    public void idempotentMethodWithThreeParameter(@JdempotentRequestPayload IdempotentTestPayload testObject, IdempotentTestPayload anotherObject, IdempotentTestPayload anotherObject2) {
     }
 
-    @IdempotentResource(cachePrefix = "TestIdempotentResource")
-    public void idempotentMethodWithThreeParamaterAndMultipleIdempotentRequestPayloadAnnotation(IdempotentTestPayload testObject, @IdempotentRequestPayload IdempotentTestPayload anotherObject, @IdempotentRequestPayload Object anotherObject2) {
+    @JdempotentResource(cachePrefix = "TestIdempotentResource")
+    public void idempotentMethodWithThreeParamaterAndMultipleJdempotentRequestPayloadAnnotation(IdempotentTestPayload testObject, @JdempotentRequestPayload IdempotentTestPayload anotherObject, @JdempotentRequestPayload Object anotherObject2) {
     }
 
-    @IdempotentResource(cachePrefix = "TestIdempotentResource")
+    @JdempotentResource(cachePrefix = "TestIdempotentResource")
     public void idempotentMethodWithZeroParamater() {
     }
 
-    @IdempotentResource(cachePrefix = "TestIdempotentResource")
+    @JdempotentResource(cachePrefix = "TestIdempotentResource")
     public void methodWithTwoParamater(IdempotentTestPayload testObject, IdempotentTestPayload anotherObject) {
     }
 
-    @IdempotentResource
+    @JdempotentResource
     public IdempotentTestPayload idempotentMethodReturnArg(IdempotentTestPayload testObject) {
         return testObject;
     }
 
-    @IdempotentResource
-    public String idempotencyKeyAsString(@IdempotentRequestPayload String idempotencyKey) {
+    @JdempotentResource
+    public String idempotencyKeyAsString(@JdempotentRequestPayload String idempotencyKey) {
         return idempotencyKey;
     }
 }

@@ -2,7 +2,7 @@ package aspect.withaspect;
 
 import aspect.core.IdempotentTestPayload;
 import aspect.core.TestIdempotentResource;
-import com.trendyol.jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
@@ -73,7 +73,7 @@ public class IdempotentAspectUT {
         ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
         MethodSignature signature = mock(MethodSignature.class);
         Method method = TestIdempotentResource.class.getMethod("idempotentMethod", IdempotentTestPayload.class);
-        IdempotentResource idempotentResource = mock(IdempotentResource.class);
+        JdempotentResource jdempotentResource = mock(JdempotentResource.class);
         IdempotentTestPayload payload = new IdempotentTestPayload("payload");
         TestIdempotentResource testIdempotentResource = mock(TestIdempotentResource.class);
 
@@ -103,7 +103,7 @@ public class IdempotentAspectUT {
         ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
         MethodSignature signature = mock(MethodSignature.class);
         Method method = TestIdempotentResource.class.getMethod("idempotentMethodThrowingARuntimeException", IdempotentTestPayload.class);
-        IdempotentResource idempotentResource = mock(IdempotentResource.class);
+        JdempotentResource jdempotentResource = mock(JdempotentResource.class);
         IdempotentTestPayload payload = new IdempotentTestPayload("payload");
         TestIdempotentResource testIdempotentResource = mock(TestIdempotentResource.class);
 
@@ -135,7 +135,7 @@ public class IdempotentAspectUT {
         ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
         MethodSignature signature = mock(MethodSignature.class);
         Method method = TestIdempotentResource.class.getMethod("idempotentMethodWithZeroParamater");
-        IdempotentResource idempotentResource = mock(IdempotentResource.class);
+        JdempotentResource jdempotentResource = mock(JdempotentResource.class);
         IdempotentTestPayload payload = new IdempotentTestPayload("payload");
         TestIdempotentResource testIdempotentResource = mock(TestIdempotentResource.class);
 

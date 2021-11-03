@@ -1,10 +1,10 @@
 package aspect.core;
 
-import com.trendyol.jdempotent.core.annotation.IdempotentIgnore;
+import com.trendyol.jdempotent.core.annotation.JdempotentIgnore;
 
 public class IdempotentTestPayload {
     private String name;
-    @IdempotentIgnore
+    @JdempotentIgnore
     private Long age;
 
     public IdempotentTestPayload() {

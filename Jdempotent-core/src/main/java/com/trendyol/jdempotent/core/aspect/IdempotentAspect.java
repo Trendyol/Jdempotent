@@ -116,14 +116,14 @@ public class IdempotentAspect {
      * @return
      * @throws Throwable
      */
-    @Around("@annotation(com.trendyol.jdempotent.core.annotation.IdempotentResource)")
+    @Around("@annotation(com.trendyol.jdempotent.core.annotation.JdempotentResource)")
     public Object execute(ProceedingJoinPoint pjp) throws Throwable {
         String classAndMethodName = generateLogPrefixForIncomingEvent(pjp);
         IdempotentRequestWrapper requestObject = findIdempotentRequestArg(pjp);
-        String listenerName = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).cachePrefix();
+        String listenerName = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(JdempotentResource.class).cachePrefix();
         IdempotencyKey idempotencyKey = keyGenerator.generateIdempotentKey(requestObject, listenerName, stringBuilders.get(), messageDigests.get());
-        Long customTtl = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).ttl();
-        TimeUnit timeUnit = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(IdempotentResource.class).ttlTimeUnit();
+        Long customTtl = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(JdempotentResource.class).ttl();
+        TimeUnit timeUnit = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(JdempotentResource.class).ttlTimeUnit();
 
         logger.debug(classAndMethodName + "starting for {}", requestObject);
 
@@ -209,7 +209,7 @@ public class IdempotentAspect {
                 Annotation[][] annotations = method.getParameterAnnotations();
                 for (int i = 0; i < args.length; i++) {
                     for (Annotation annotation : annotations[i]) {
-                        if (annotation instanceof IdempotentRequestPayload) {
+                        if (annotation instanceof JdempotentRequestPayload) {
                             return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args[i]));
                         }
                     }
@@ -259,7 +259,7 @@ public class IdempotentAspect {
                 wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args));
             } else {
                 for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
-                    if (!(annotation instanceof IdempotentIgnore)) {
+                    if (!(annotation instanceof JdempotentIgnore)) {
                         wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args));
                     }
                 }
