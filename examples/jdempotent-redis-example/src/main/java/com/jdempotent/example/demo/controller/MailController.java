@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.trendyol.jdempotent.core.annotation.IdempotentRequestPayload;
+import com.trendyol.jdempotent.core.annotation.JdempotentRequestPayload;
 import javax.mail.MessagingException;
 import java.util.concurrent.TimeUnit;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -47,7 +47,7 @@ public class MailController {
 
     @PostMapping("/send-email-header")
     @IdempotentResource(cachePrefix = "MailController.sendEmail")
-    public ResponseEntity<SendEmailResponse> sendEmail(@IdempotentRequestPayload @RequestHeader("x-idempotency-key") String idempotencyKey, @RequestBody SendEmailRequest request) {
+    public ResponseEntity<SendEmailResponse> sendEmail(@JdempotentRequestPayload @RequestHeader("x-idempotency-key") String idempotencyKey, @RequestBody SendEmailRequest request) {
         if (StringUtils.isEmpty(request.getEmail())) {
             throw new InvalidEmailAddressException();
         }

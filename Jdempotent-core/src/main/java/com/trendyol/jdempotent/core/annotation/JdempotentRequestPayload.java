@@ -9,8 +9,7 @@ import java.lang.annotation.Target;
  * Add to the methods arguments that represents the idempotent request payload.
  *
  */
-@Deprecated
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IdempotentRequestPayload {
+public @interface JdempotentRequestPayload {
 }
