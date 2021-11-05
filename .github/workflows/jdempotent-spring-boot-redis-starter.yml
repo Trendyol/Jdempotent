@@ -1,4 +1,4 @@
-name: Release Jdempotent-spring-boot-redis-starter
+name: Release Jdempotent
 
 # Run workflow on manually
 on: [workflow_dispatch]
