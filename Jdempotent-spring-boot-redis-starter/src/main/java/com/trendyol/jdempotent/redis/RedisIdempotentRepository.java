@@ -82,8 +82,23 @@ public class RedisIdempotentRepository implements IdempotentRepository {
             ttl = ttl == 0 ? redisProperties.getExpirationTimeHour() : ttl;
             IdempotentRequestResponseWrapper requestResponseWrapper = valueOperations.get(idempotencyKey.getKeyValue());
             requestResponseWrapper.setResponse(response);
-            valueOperations.set(idempotencyKey.getKeyValue(), prepareValue(request), ttl, timeUnit);
+            valueOperations.set(idempotencyKey.getKeyValue(), prepareValue(request, response), ttl, timeUnit);
         }
+    }
+
+    /**
+     * Prepares the value stored in redis
+     *
+     * if persistReqRes set to false,
+     * it does not persist related request values in redis
+     * @param request
+     * @return
+     */
+    private IdempotentRequestResponseWrapper prepareValue(IdempotentRequestWrapper request) {
+        if (redisProperties.getPersistReqRes()) {
+            return new IdempotentRequestResponseWrapper(request);
+        }
+        return new IdempotentRequestResponseWrapper(null);
     }
 
     /**
@@ -92,11 +107,12 @@ public class RedisIdempotentRepository implements IdempotentRepository {
      * if persistReqRes set to false,
      * it does not persist related request and response values in redis
      * @param request
+     * @param response
      * @return
      */
-    private IdempotentRequestResponseWrapper prepareValue(IdempotentRequestWrapper request) {
+    private IdempotentRequestResponseWrapper prepareValue(IdempotentRequestWrapper request, IdempotentResponseWrapper response) {
         if (redisProperties.getPersistReqRes()) {
-            return new IdempotentRequestResponseWrapper(request);
+            return new IdempotentRequestResponseWrapper(request, response);
         }
         return new IdempotentRequestResponseWrapper(null);
     }
