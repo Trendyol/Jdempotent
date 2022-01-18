@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -45,7 +46,6 @@ public class RedisIdempotentRepositoryTest {
 
     @Captor
     private ArgumentCaptor<IdempotentRequestResponseWrapper> captor;
-
 
     @BeforeEach
     public void setUp() {
@@ -157,7 +157,7 @@ public class RedisIdempotentRepositoryTest {
         var wrapper = new IdempotentRequestResponseWrapper(
                 new IdempotentRequestWrapper(new Object()));
         when(valueOperations.get(key.getKeyValue())).thenReturn(wrapper);
-        assertEquals(wrapper.getResponse(), null);
+        assertNull(wrapper.getResponse());
         when(redisConfigProperties.getPersistReqRes()).thenReturn(true);
 
         //When
@@ -168,6 +168,31 @@ public class RedisIdempotentRepositoryTest {
         verify(valueOperations).set(eq(key.getKeyValue()), argumentCaptor.capture(), eq(1L), eq(TimeUnit.HOURS));
         IdempotentRequestResponseWrapper value = argumentCaptor.getValue();
         assertEquals(value.getRequest().getRequest(), 123L);
+        assertEquals(value.getResponse().getResponse(), "response");
+        assertEquals(wrapper.getResponse().getResponse(), "response");
+    }
+
+    @Test
+    public void given_the_idempotence_key_and_the_request_and_response_objects_when_defining_the_response_one_must_save_the_key_without_the_request_and_response_object() {
+        //Given
+        IdempotencyKey key = new IdempotencyKey("key");
+        IdempotentRequestWrapper request = new IdempotentRequestWrapper(123L);
+        IdempotentResponseWrapper response = new IdempotentResponseWrapper("response");
+        var wrapper = new IdempotentRequestResponseWrapper(
+                new IdempotentRequestWrapper(new Object()));
+        when(valueOperations.get(key.getKeyValue())).thenReturn(wrapper);
+        assertNull(wrapper.getResponse());
+        when(redisConfigProperties.getPersistReqRes()).thenReturn(false);
+
+        //When
+        redisIdempotentRepository.setResponse(key, request, response, 1L, TimeUnit.HOURS);
+
+        //Then
+        var argumentCaptor = ArgumentCaptor.forClass(IdempotentRequestResponseWrapper.class);
+        verify(valueOperations).set(eq(key.getKeyValue()), argumentCaptor.capture(), eq(1L), eq(TimeUnit.HOURS));
+        IdempotentRequestResponseWrapper value = argumentCaptor.getValue();
+        assertNull(value.getRequest());
+        assertNull(value.getResponse());
         assertEquals(wrapper.getResponse().getResponse(), "response");
     }
 }
