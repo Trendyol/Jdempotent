@@ -18,6 +18,11 @@ public class IdempotentRequestResponseWrapper implements Serializable {
         this.request = request;
     }
 
+    public IdempotentRequestResponseWrapper(IdempotentRequestWrapper request, IdempotentResponseWrapper response) {
+        this.request = request;
+        this.response = response;
+    }
+
     public IdempotentResponseWrapper getResponse() {
         return response;
     }
