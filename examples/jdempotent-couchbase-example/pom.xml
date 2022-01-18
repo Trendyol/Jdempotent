@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.trendyol</groupId>
             <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
-            <version>1.0.11</version>
+            <version>1.0.12</version>
         </dependency>
     </dependencies>
 
