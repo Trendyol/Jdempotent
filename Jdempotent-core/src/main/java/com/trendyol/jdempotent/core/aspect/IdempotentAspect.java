@@ -2,21 +2,20 @@ package com.trendyol.jdempotent.core.aspect;
 
 import com.trendyol.jdempotent.core.annotation.*;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
+import com.trendyol.jdempotent.core.chain.*;
 import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import com.trendyol.jdempotent.core.generator.KeyGenerator;
-import com.trendyol.jdempotent.core.model.IdempotencyKey;
-import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
-import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
-import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
+import com.trendyol.jdempotent.core.model.*;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -31,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 public class IdempotentAspect {
     private static final Logger logger = LoggerFactory.getLogger(IdempotentAspect.class);
+    private AnnotationChain annotationChain;
     private KeyGenerator keyGenerator;
     private IdempotentRepository idempotentRepository;
     private ErrorConditionalCallback errorCallback;
@@ -73,40 +73,47 @@ public class IdempotentAspect {
     public IdempotentAspect() {
         this.idempotentRepository = new InMemoryIdempotentRepository();
         this.keyGenerator = new DefaultKeyGenerator();
+        this.annotationChain = fillChains();
     }
 
     public IdempotentAspect(ErrorConditionalCallback errorCallback) {
         this.errorCallback = errorCallback;
         this.idempotentRepository = new InMemoryIdempotentRepository();
         this.keyGenerator = new DefaultKeyGenerator();
+        this.annotationChain = fillChains();
     }
 
     public IdempotentAspect(IdempotentRepository idempotentRepository) {
         this.idempotentRepository = idempotentRepository;
         this.keyGenerator = new DefaultKeyGenerator();
+        this.annotationChain = fillChains();
     }
 
     public IdempotentAspect(IdempotentRepository idempotentRepository, ErrorConditionalCallback errorCallback) {
         this.idempotentRepository = idempotentRepository;
         this.errorCallback = errorCallback;
         this.keyGenerator = new DefaultKeyGenerator();
+        this.annotationChain = fillChains();
     }
 
     public IdempotentAspect(ErrorConditionalCallback errorCallback, DefaultKeyGenerator keyGenerator) {
         this.errorCallback = errorCallback;
         this.idempotentRepository = new InMemoryIdempotentRepository();
         this.keyGenerator = keyGenerator;
+        this.annotationChain = fillChains();
     }
 
     public IdempotentAspect(IdempotentRepository idempotentRepository, DefaultKeyGenerator keyGenerator) {
         this.idempotentRepository = idempotentRepository;
         this.keyGenerator = keyGenerator;
+        this.annotationChain = fillChains();
     }
 
     public IdempotentAspect(IdempotentRepository idempotentRepository, ErrorConditionalCallback errorCallback, DefaultKeyGenerator keyGenerator) {
         this.idempotentRepository = idempotentRepository;
         this.errorCallback = errorCallback;
         this.keyGenerator = keyGenerator;
+        this.annotationChain = fillChains();
     }
 
     /**
@@ -253,16 +260,12 @@ public class IdempotentAspect {
             wrapper.getNonIgnoredFields().put(args.toString(), args);
             return wrapper;
         }
+
         for (Field declaredField : declaredFields) {
             declaredField.setAccessible(true);
-            if (declaredField.getDeclaredAnnotations().length == 0) {
-                wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args));
-            } else {
-                for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
-                    if (!(annotation instanceof JdempotentIgnore)) {
-                        wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args));
-                    }
-                }
+            KeyValuePair keyValuePair = annotationChain.process(new ChainData(declaredField,args));
+            if (!StringUtils.isEmpty(keyValuePair.getKey())){
+                wrapper.getNonIgnoredFields().put(keyValuePair.getKey(), keyValuePair.getValue());
             }
         }
         return wrapper;
@@ -282,5 +285,17 @@ public class IdempotentAspect {
      */
     public IdempotentRepository getIdempotentRepository() {
         return idempotentRepository;
+    }
+
+    private AnnotationChain fillChains(){
+        JdempotentNoAnnotationChain jdempotentNoAnnotationChain = new JdempotentNoAnnotationChain();
+        JdempotentIgnoreAnnotationChain jdempotentIgnoreAnnotationChain = new JdempotentIgnoreAnnotationChain();
+        JdempotentDefaultChain jdempotentDefaultChain = new JdempotentDefaultChain();
+        JdempotentPropertyAnnotationChain jdempotentPropertyAnnotationChain = new JdempotentPropertyAnnotationChain();
+
+        jdempotentNoAnnotationChain.next(jdempotentIgnoreAnnotationChain);
+        jdempotentIgnoreAnnotationChain.next(jdempotentPropertyAnnotationChain);
+        jdempotentPropertyAnnotationChain.next(jdempotentDefaultChain);
+        return jdempotentIgnoreAnnotationChain;
     }
 }
