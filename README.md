@@ -62,11 +62,22 @@ For example:
 
 ```java
 public class IdempotentPaylaod {
- @JdempotentId
- private String jdempotentId;
- private Object data;
+   @JdempotentId
+   private String jdempotentId;
+   private Object data;
 }
 ```
+
+You might want to handle the name of the field differently to ensure idempotency. Just use @JdempotentProperty annotation needs to get the field name differently and generate the hash
+
+```java
+public class IdempotentPaylaod {
+   @JdempotentProperty("userId")
+   private String customerId;
+   private Object data;
+}
+```
+
 
 3. If you want to handle a custom error case, you need to implement `ErrorConditionalCallback` like the following example:
 
