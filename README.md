@@ -56,9 +56,7 @@ public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
 ```
 
 If want that idempotencyId in your payload. Put `@JdempotentId` annotation that places the generated idempotency identifier into annotated field.
-Can be thought of as @Id annotation in jpa
-
-For example:
+Can be thought of as @Id annotation in jpa.
 
 ```java
 public class IdempotentPaylaod {
@@ -68,7 +66,7 @@ public class IdempotentPaylaod {
 }
 ```
 
-You might want to handle the name of the field differently to ensure idempotency. Just use @JdempotentProperty annotation needs to get the field name differently and generate the hash
+You might want to handle the name of the field differently to ensure idempotency. Just use @JdempotentProperty annotation needs to get the field name differently and generate the hash inspired by jackson (@JsonProperty annotation)
 
 ```java
 public class IdempotentPaylaod {
