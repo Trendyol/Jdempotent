@@ -7,6 +7,7 @@ import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
+import com.trendyol.jdempotent.core.model.IdempotencyKey;
 import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -48,6 +49,7 @@ public class IdempotentAspectUT {
         IdempotentTestPayload payload = new IdempotentTestPayload("payload");
         TestIdempotentResource testIdempotentResource = mock(TestIdempotentResource.class);
 
+        when(defaultKeyGenerator.generateIdempotentKey(any(),any(),any(),any())).thenReturn(new IdempotencyKey("123"));
         when(joinPoint.getSignature()).thenReturn(signature);
         when(joinPoint.getArgs()).thenReturn(new Object[]{payload});
         when(signature.getMethod()).thenReturn(method);
@@ -212,8 +214,38 @@ public class IdempotentAspectUT {
 
         //then
         IdempotentIgnorableWrapper requestWrapperRequest = (IdempotentIgnorableWrapper) idempotentRequestWrapper.getRequest();
-        assertEquals(requestWrapperRequest.getNonIgnoredFields().size(), 1);
+        assertEquals(requestWrapperRequest.getNonIgnoredFields().size(), 2);
         assertEquals(requestWrapperRequest.getNonIgnoredFields().get("name"), "payload");
+        assertEquals(requestWrapperRequest.getNonIgnoredFields().get("transactionId"), null);
+        verify(joinPoint).getArgs();
+    }
+
+    @Test
+    public void given_a_payload_with_jdempotent_property_when_find_idempotent_request_then_return_idempotent_ignorable_wrapper() throws Throwable {
+        //given
+        ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
+        MethodSignature signature = mock(MethodSignature.class);
+        Method method = TestIdempotentResource.class.getMethod("idempotentMethod", IdempotentTestPayload.class);
+
+        IdempotentTestPayload payload = new IdempotentTestPayload("payload");
+        payload.setEventId(1l);
+        TestIdempotentResource testIdempotentResource = mock(TestIdempotentResource.class);
+
+        when(joinPoint.getSignature()).thenReturn(signature);
+        when(joinPoint.getArgs()).thenReturn(new Object[]{payload});
+        when(signature.getMethod()).thenReturn(method);
+        when(joinPoint.getTarget()).thenReturn(testIdempotentResource);
+        when(joinPoint.getTarget().getClass().getSimpleName()).thenReturn("TestIdempotentResource");
+        when(idempotentRepository.contains(any())).thenReturn(false);
+
+        //when
+        var idempotentRequestWrapper = idempotentAspect.findIdempotentRequestArg(joinPoint);
+
+        //then
+        IdempotentIgnorableWrapper requestWrapperRequest = (IdempotentIgnorableWrapper) idempotentRequestWrapper.getRequest();
+        assertEquals(requestWrapperRequest.getNonIgnoredFields().size(), 2);
+        assertEquals(requestWrapperRequest.getNonIgnoredFields().get("name"), "payload");
+        assertEquals(requestWrapperRequest.getNonIgnoredFields().get("transactionId"), 1l);
         verify(joinPoint).getArgs();
     }
 }

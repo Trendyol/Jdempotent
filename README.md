@@ -20,7 +20,7 @@ For Redis:
 <dependency>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-redis-starter</artifactId>
-    <version>1.0.12</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 For Couchbase:
@@ -29,7 +29,7 @@ For Couchbase:
 <dependency>
     <groupId>com.trendyol</groupId>
     <artifactId>Jdempotent-spring-boot-couchbase-starter</artifactId>
-    <version>1.0.12</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
