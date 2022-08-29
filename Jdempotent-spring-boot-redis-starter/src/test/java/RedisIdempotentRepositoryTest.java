@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -119,7 +120,7 @@ public class RedisIdempotentRepositoryTest {
         var argumentCaptor = ArgumentCaptor.forClass(IdempotentRequestResponseWrapper.class);
         verify(valueOperations).set(eq(key.getKeyValue()), argumentCaptor.capture(), eq(1L), eq(TimeUnit.HOURS));
         IdempotentRequestResponseWrapper value = argumentCaptor.getValue();
-        assertEquals(value.getRequest().getRequest(), 123L);
+        assertEquals(value.getRequest().getRequest(), Collections.singletonList(123L));
     }
 
     @Test
@@ -167,7 +168,7 @@ public class RedisIdempotentRepositoryTest {
         var argumentCaptor = ArgumentCaptor.forClass(IdempotentRequestResponseWrapper.class);
         verify(valueOperations).set(eq(key.getKeyValue()), argumentCaptor.capture(), eq(1L), eq(TimeUnit.HOURS));
         IdempotentRequestResponseWrapper value = argumentCaptor.getValue();
-        assertEquals(value.getRequest().getRequest(), 123L);
+        assertEquals(value.getRequest().getRequest(), Collections.singletonList(123L));
         assertEquals(value.getResponse().getResponse(), "response");
         assertEquals(wrapper.getResponse().getResponse(), "response");
     }

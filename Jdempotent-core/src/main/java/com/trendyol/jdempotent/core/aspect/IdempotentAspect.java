@@ -21,6 +21,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -206,7 +209,7 @@ public class IdempotentAspect {
         if (args.length == 0) {
             throw new IllegalStateException("Idempotent method not found");
         } else if (args.length == 1) {
-            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args[0]));
+            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(Collections.singletonList(args[1])));
         } else {
             try {
                 MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -214,12 +217,16 @@ public class IdempotentAspect {
                 Class<?>[] parameterTypes = signature.getMethod().getParameterTypes();
                 var method = pjp.getTarget().getClass().getMethod(methodName, parameterTypes);
                 Annotation[][] annotations = method.getParameterAnnotations();
+                List<Object> payloads = new ArrayList<>();
                 for (int i = 0; i < args.length; i++) {
                     for (Annotation annotation : annotations[i]) {
                         if (annotation instanceof JdempotentRequestPayload) {
-                            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args[i]));
+                            payloads.add(args[i]);
                         }
                     }
+                }
+                if(!payloads.isEmpty()) {
+                    return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(payloads));
                 }
             } catch (NoSuchMethodException | SecurityException e) {
                 throw new IllegalStateException("Idempotent method not found", e);
@@ -253,19 +260,20 @@ public class IdempotentAspect {
         }
     }
 
-    public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(Object args) throws IllegalAccessException {
+    public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(List<Object> args) throws IllegalAccessException {
         var wrapper = new IdempotentIgnorableWrapper();
-        Field[] declaredFields = args.getClass().getDeclaredFields();
-        if(args instanceof String){
-            wrapper.getNonIgnoredFields().put(args.toString(), args);
-            return wrapper;
-        }
-
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            KeyValuePair keyValuePair = annotationChain.process(new ChainData(declaredField,args));
-            if (!StringUtils.isEmpty(keyValuePair.getKey())){
-                wrapper.getNonIgnoredFields().put(keyValuePair.getKey(), keyValuePair.getValue());
+        for (Object arg: args) {
+            Field[] declaredFields = arg.getClass().getDeclaredFields();
+            if(arg instanceof String){
+                wrapper.getNonIgnoredFields().put(arg.toString(), arg);
+            } else {
+                for (Field declaredField : declaredFields) {
+                    declaredField.setAccessible(true);
+                    KeyValuePair keyValuePair = annotationChain.process(new ChainData(declaredField, arg));
+                    if (!StringUtils.isEmpty(keyValuePair.getKey())) {
+                        wrapper.getNonIgnoredFields().put(keyValuePair.getKey(), keyValuePair.getValue());
+                    }
+                }
             }
         }
         return wrapper;

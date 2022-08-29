@@ -1,6 +1,12 @@
 package com.trendyol.jdempotent.core.model;
 
+import org.springframework.util.comparator.Comparators;
+
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -9,16 +15,20 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class IdempotentRequestWrapper implements Serializable {
-    private Object request;
+    private List<Object> request;
 
     public IdempotentRequestWrapper(){
     }
 
     public IdempotentRequestWrapper(Object request) {
+        this.request = Collections.singletonList(request);
+    }
+
+    public IdempotentRequestWrapper(List<Object> request) {
         this.request = request;
     }
 
-    public Object getRequest() {
+    public List<Object> getRequest() {
         return request;
     }
 
@@ -29,11 +39,18 @@ public class IdempotentRequestWrapper implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return request == null ? false : request.equals(obj);
+        return !Objects.isNull(request) && request.stream().anyMatch(req -> req.equals(obj));
     }
 
     @Override
     public String toString() {
-        return String.format("IdempotentRequestWrapper [request=%s]", request);
+        StringBuilder requestBuilder = new StringBuilder();
+        this.request.stream()
+                .map(Object::toString)
+                .collect(Collectors.toList()).stream()
+                .sorted(String::compareTo)
+                .forEach(requestBuilder::append);
+        System.out.println(requestBuilder.toString());
+        return String.format("IdempotentRequestWrapper [request=%s]", requestBuilder.toString());
     }
 }

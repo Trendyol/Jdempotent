@@ -1,0 +1,40 @@
+version: '2'
+
+networks:
+  jdempotent-example:
+    driver: bridge
+
+services:
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=str0ng_passw0rd
+    networks:
+      - jdempotent-example
+    ports:
+      - '6379:6379'
+  redis-slave:
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis
+      - REDIS_MASTER_PASSWORD=str0ng_passw0rd
+      - REDIS_PASSWORD=str0ng_passw0rd
+    ports:
+      - '6379'
+    depends_on:
+      - redis
+    networks:
+      - jdempotent-example
+  redis-sentinel:
+    image: 'bitnami/redis-sentinel:latest'
+    environment:
+      - REDIS_MASTER_PASSWORD=str0ng_passw0rd
+    depends_on:
+      - redis
+      - redis-slave
+    ports:
+      - '26379:26379'
+    networks:
+      - jdempotent-example

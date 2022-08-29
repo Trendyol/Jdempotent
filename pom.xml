@@ -4,7 +4,7 @@
     <groupId>com.trendyol</groupId>
     <artifactId>jdempotent</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <name>Jdempotent</name>
     <url>https://github.com/Trendyol/Jdempotent</url>
     <description>Jdempotent</description>
@@ -45,6 +45,7 @@
         <module>Jdempotent-core</module>
         <module>Jdempotent-spring-boot-redis-starter</module>
         <module>Jdempotent-spring-boot-couchbase-starter</module>
+        <module>Jdempotent-Coverage</module>
     </modules>
 
     <dependencyManagement>
@@ -52,7 +53,7 @@
             <dependency>
                 <groupId>de.siegmar</groupId>
                 <artifactId>logback-gelf</artifactId>
-                <version>1.1.0</version>
+                <version>4.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -68,7 +69,7 @@
             <dependency>
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
-                <version>3.2.0</version>
+                <version>4.2.3</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -116,28 +117,6 @@
             <id>deploy</id>
             <build>
                 <plugins>
-                    <!-- Source plugin -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <!-- Prevent `gpg` from using pinentry programs -->
-                                    <gpgArguments>
-                                        <arg>--pinentry-mode</arg>
-                                        <arg>loopback</arg>
-                                    </gpgArguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <!-- Javadoc plugin -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -289,10 +268,6 @@
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>

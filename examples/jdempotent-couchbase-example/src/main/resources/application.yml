@@ -5,27 +5,28 @@ jdempotent:
   cache:
     persistReqRes: false
     couchbase:
-      connection-string: XXXXXXXX
-      password: XXXXXXXX
-      username: XXXXXXXX
-      bucket-name: XXXXXXXX
+      connection-string: localhost
+      password: jdempotent
+      username: jdempotent
+      bucket-name: jdempotent
       connect-timeout: 100000
       query-timeout: 20000
       kv-timeout: 3000
 
 email:
   from:
-    address: XXXXXXX
+    address: XXXXXXXXXXXX
 
 spring:
   mail:
-    host: smtp.gmail.com
+    host: XXXXXXXXXXXX
     port: 587
-    username: XXXXXXX
-    password: XXXXXXX
+    username: XXXXXXXXXXXX
+    password: XXXXXXXXXXXX
     properties.mail.smtp:
       auth: true
       starttls.enable: true
+
 
 template:
   welcoming:
