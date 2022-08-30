@@ -1,9 +1,8 @@
-package aspect.withaspect;
+package com.trendyol.jdempotent.core.aspect;
 
-import aspect.core.IdempotentTestPayload;
-import aspect.core.TestIdempotentResource;
+import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
+import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import com.trendyol.jdempotent.core.annotation.JdempotentResource;
-import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
@@ -19,13 +18,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {TestIdempotentResource.class})
-public class IdempotentAspectUT {
+public class IdempotentAspectUTTest {
 
     @InjectMocks
     private IdempotentAspect idempotentAspect;
@@ -213,7 +213,9 @@ public class IdempotentAspectUT {
         var idempotentRequestWrapper = idempotentAspect.findIdempotentRequestArg(joinPoint);
 
         //then
-        IdempotentIgnorableWrapper requestWrapperRequest = (IdempotentIgnorableWrapper) idempotentRequestWrapper.getRequest();
+        List<Object> requestWrapperRequests = idempotentRequestWrapper.getRequest();
+        assertEquals(requestWrapperRequests.size(), 1);
+        IdempotentIgnorableWrapper requestWrapperRequest = (IdempotentIgnorableWrapper) requestWrapperRequests.get(0);
         assertEquals(requestWrapperRequest.getNonIgnoredFields().size(), 2);
         assertEquals(requestWrapperRequest.getNonIgnoredFields().get("name"), "payload");
         assertEquals(requestWrapperRequest.getNonIgnoredFields().get("transactionId"), null);
@@ -242,7 +244,9 @@ public class IdempotentAspectUT {
         var idempotentRequestWrapper = idempotentAspect.findIdempotentRequestArg(joinPoint);
 
         //then
-        IdempotentIgnorableWrapper requestWrapperRequest = (IdempotentIgnorableWrapper) idempotentRequestWrapper.getRequest();
+        List<Object> requestWrapperRequests = idempotentRequestWrapper.getRequest();
+        assertEquals(requestWrapperRequests.size(), 1);
+        IdempotentIgnorableWrapper requestWrapperRequest = (IdempotentIgnorableWrapper) requestWrapperRequests.get(0);
         assertEquals(requestWrapperRequest.getNonIgnoredFields().size(), 2);
         assertEquals(requestWrapperRequest.getNonIgnoredFields().get("name"), "payload");
         assertEquals(requestWrapperRequest.getNonIgnoredFields().get("transactionId"), 1l);

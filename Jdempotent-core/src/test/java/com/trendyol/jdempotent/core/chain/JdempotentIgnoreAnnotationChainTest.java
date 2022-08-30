@@ -1,8 +1,6 @@
-package aspect.chain;
+package com.trendyol.jdempotent.core.chain;
 
-import aspect.core.IdempotentTestPayload;
-import com.trendyol.jdempotent.core.chain.JdempotentDefaultChain;
-import com.trendyol.jdempotent.core.chain.JdempotentIgnoreAnnotationChain;
+import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
 import com.trendyol.jdempotent.core.model.ChainData;
 import com.trendyol.jdempotent.core.model.KeyValuePair;
 import org.junit.Before;

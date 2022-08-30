@@ -1,4 +1,4 @@
-package aspect.core;
+package com.trendyol.jdempotent.core.utils;
 
 public class TestException extends RuntimeException {
     public TestException(){

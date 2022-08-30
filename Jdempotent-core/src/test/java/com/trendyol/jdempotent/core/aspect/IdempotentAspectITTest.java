@@ -1,8 +1,8 @@
-package aspect.withaspect;
+package com.trendyol.jdempotent.core.aspect;
 
-import aspect.core.IdempotentTestPayload;
-import aspect.core.TestException;
-import aspect.core.TestIdempotentResource;
+import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
+import com.trendyol.jdempotent.core.utils.TestException;
+import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
@@ -21,12 +21,13 @@ import org.springframework.test.util.AopTestUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {IdempotentAspectIT.class, TestAopContext.class, TestIdempotentResource.class, DefaultKeyGenerator.class, InMemoryIdempotentRepository.class})
-public class IdempotentAspectIT {
+@ContextConfiguration(classes = {IdempotentAspectITTest.class, TestAopContext.class, TestIdempotentResource.class, DefaultKeyGenerator.class, InMemoryIdempotentRepository.class})
+public class IdempotentAspectITTest {
 
     @Autowired
     private TestIdempotentResource testIdempotentResource;
@@ -40,7 +41,7 @@ public class IdempotentAspectIT {
 
     @Test
     public void given_aop_context_then_run_with_aop_context() {
-        JdempotentResource jdempotentResource = TestIdempotentResource.class.getDeclaredMethods()[0].getAnnotation(JdempotentResource.class);
+        JdempotentResource jdempotentResource = TestIdempotentResource.class.getDeclaredMethods()[1].getAnnotation(JdempotentResource.class);
 
         assertNotEquals(testIdempotentResource.getClass(), TestIdempotentResource.class);
         assertTrue(AopUtils.isAopProxy(testIdempotentResource));
@@ -58,6 +59,7 @@ public class IdempotentAspectIT {
         IdempotentTestPayload test = new IdempotentTestPayload();
         IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
         wrapper.getNonIgnoredFields().put("name", null);
+        wrapper.getNonIgnoredFields().put("transactionId", null);
 
         IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
@@ -76,6 +78,7 @@ public class IdempotentAspectIT {
         IdempotentTestPayload test2 = new IdempotentTestPayload();
         IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
         wrapper.getNonIgnoredFields().put("name", null);
+        wrapper.getNonIgnoredFields().put("transactionId", null);
 
         IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
@@ -111,6 +114,7 @@ public class IdempotentAspectIT {
         Object test2 = new Object();
         IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
         wrapper.getNonIgnoredFields().put("name", null);
+        wrapper.getNonIgnoredFields().put("transactionId", null);
         IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
@@ -145,6 +149,7 @@ public class IdempotentAspectIT {
         IdempotentTestPayload test = new IdempotentTestPayload();
         IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
         wrapper.getNonIgnoredFields().put("name", null);
+        wrapper.getNonIgnoredFields().put("transactionId", null);
 
         IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 

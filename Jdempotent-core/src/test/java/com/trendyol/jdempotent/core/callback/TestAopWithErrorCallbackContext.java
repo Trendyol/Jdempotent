@@ -1,4 +1,4 @@
-package aspect.errorcallback;
+package com.trendyol.jdempotent.core.callback;
 
 import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;

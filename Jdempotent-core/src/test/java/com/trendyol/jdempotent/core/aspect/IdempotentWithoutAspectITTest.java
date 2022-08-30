@@ -1,6 +1,6 @@
-package aspect.withoutaspect;
+package com.trendyol.jdempotent.core.aspect;
 
-import aspect.core.TestIdempotentResource;
+import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.aop.framework.AopProxyUtils;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {TestIdempotentResource.class})
-public class IdempotentWithoutAspectIT {
+public class IdempotentWithoutAspectITTest {
 
     @Autowired
     private TestIdempotentResource testIdempotentResource;

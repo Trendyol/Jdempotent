@@ -8,7 +8,7 @@
         <version>1.2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <artifactId>Jdempotent-Coverage</artifactId>
 
     <properties>
@@ -129,6 +129,18 @@
                 <version>0.8.8</version>
                 <executions>
                     <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>report-aggregate</id>
                         <phase>verify</phase>
                         <goals>
@@ -136,6 +148,15 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>com/trendyol/jdempotent/core/annotation/**/*</exclude>
+                        <exclude>com/trendyol/jdempotent/core/callback/**/*</exclude>
+                        <exclude>com/trendyol/jdempotent/core/config/**/*</exclude>
+                        <exclude>com/trendyol/jdempotent/core/constant/**/*</exclude>
+                        <exclude>com/trendyol/jdempotent/core/model/**/*</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.owasp</groupId>
@@ -172,7 +193,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.1</version>
+                    <version>3.0.0-M7</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>

@@ -1,8 +1,8 @@
-package aspect.errorcallback;
+package com.trendyol.jdempotent.core.callback;
 
-import aspect.core.IdempotentTestPayload;
-import aspect.core.TestException;
-import aspect.core.TestIdempotentResource;
+import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
+import com.trendyol.jdempotent.core.utils.TestException;
+import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
@@ -21,8 +21,8 @@ import java.security.NoSuchAlgorithmException;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {IdempotentAspectWithErrorCallbackIT.class, TestAopWithErrorCallbackContext.class, TestIdempotentResource.class, DefaultKeyGenerator.class, InMemoryIdempotentRepository.class})
-public class IdempotentAspectWithErrorCallbackIT {
+@ContextConfiguration(classes = {IdempotentAspectWithErrorCallbackITTest.class, TestAopWithErrorCallbackContext.class, TestIdempotentResource.class, DefaultKeyGenerator.class, InMemoryIdempotentRepository.class})
+public class IdempotentAspectWithErrorCallbackITTest {
 
     @Autowired
     private TestIdempotentResource testIdempotentResource;
@@ -43,6 +43,7 @@ public class IdempotentAspectWithErrorCallbackIT {
         test.setName("another");
         IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
         wrapper.getNonIgnoredFields().put("name", "another");
+        wrapper.getNonIgnoredFields().put("transactionId", null);
         IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when
@@ -59,6 +60,7 @@ public class IdempotentAspectWithErrorCallbackIT {
         test.setName("test");
         IdempotentIgnorableWrapper wrapper = new IdempotentIgnorableWrapper();
         wrapper.getNonIgnoredFields().put("name", "test");
+        wrapper.getNonIgnoredFields().put("transactionId", null);
         IdempotencyKey idempotencyKey = defaultKeyGenerator.generateIdempotentKey(new IdempotentRequestWrapper(wrapper), "TestIdempotentResource", new StringBuilder(), MessageDigest.getInstance(CryptographyAlgorithm.MD5.value()));
 
         //when

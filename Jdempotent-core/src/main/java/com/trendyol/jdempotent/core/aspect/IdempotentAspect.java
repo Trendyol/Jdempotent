@@ -209,7 +209,7 @@ public class IdempotentAspect {
         if (args.length == 0) {
             throw new IllegalStateException("Idempotent method not found");
         } else if (args.length == 1) {
-            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(Collections.singletonList(args[1])));
+            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(Collections.singletonList(args[0])));
         } else {
             try {
                 MethodSignature signature = (MethodSignature) pjp.getSignature();

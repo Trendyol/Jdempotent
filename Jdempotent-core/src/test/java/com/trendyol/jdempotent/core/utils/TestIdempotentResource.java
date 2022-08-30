@@ -1,4 +1,4 @@
-package aspect.core;
+package com.trendyol.jdempotent.core.utils;
 
 import com.trendyol.jdempotent.core.annotation.JdempotentRequestPayload;
 import com.trendyol.jdempotent.core.annotation.JdempotentResource;

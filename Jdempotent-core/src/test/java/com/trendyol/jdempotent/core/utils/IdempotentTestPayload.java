@@ -1,4 +1,4 @@
-package aspect.core;
+package com.trendyol.jdempotent.core.utils;
 
 import com.trendyol.jdempotent.core.annotation.JdempotentIgnore;
 import com.trendyol.jdempotent.core.annotation.JdempotentProperty;
