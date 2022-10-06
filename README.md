@@ -59,7 +59,7 @@ If want that idempotencyId in your payload. Put `@JdempotentId` annotation that 
 Can be thought of as @Id annotation in jpa.
 
 ```java
-public class IdempotentPaylaod {
+public class IdempotentPayload {
    @JdempotentId
    private String jdempotentId;
    private Object data;
@@ -69,7 +69,7 @@ public class IdempotentPaylaod {
 You might want to handle the name of the field differently to ensure idempotency. Just use @JdempotentProperty annotation needs to get the field name differently and generate the hash inspired by jackson (@JsonProperty annotation)
 
 ```java
-public class IdempotentPaylaod {
+public class IdempotentPayload {
    @JdempotentProperty("userId")
    private String customerId;
    private Object data;
@@ -136,7 +136,7 @@ jdempotent:
 ```
 
 Please note that you can disable Jdempotent easily if you need to. 
-For example, assume that you don't have a circut breaker and your Redis is down.
+For example, assume that you don't have a circuit breaker and your Redis is down.
 In that case, you can disable Jdempotent with the following configuration:
 
 
