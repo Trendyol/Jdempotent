@@ -1,17 +1,14 @@
-package com.trendyol.jdempotent.redis;
+package com.trendyol.jdempotent.couchbase.configuration;
 
-
+import com.couchbase.client.java.Collection;
 import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
+import com.trendyol.jdempotent.couchbase.repository.CouchbaseIdempotentRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
-/**
- *
- */
 @Configuration
 @ConditionalOnProperty(
         prefix="jdempotent", name = "enable",
@@ -19,10 +16,10 @@ import org.springframework.data.redis.core.RedisTemplate;
         matchIfMissing = true)
 public class ApplicationConfig {
 
-    private final RedisConfigProperties redisProperties;
+    private final CouchbaseConfig couchbaseConfig;
 
-    public ApplicationConfig(RedisConfigProperties redisProperties) {
-        this.redisProperties = redisProperties;
+    public ApplicationConfig(CouchbaseConfig couchbaseConfig) {
+        this.couchbaseConfig = couchbaseConfig;
     }
 
     @Bean
@@ -31,13 +28,13 @@ public class ApplicationConfig {
             havingValue = "true",
             matchIfMissing = true)
     @ConditionalOnClass(ErrorConditionalCallback.class)
-    public IdempotentAspect getIdempotentAspect(RedisTemplate redisTemplate, ErrorConditionalCallback errorConditionalCallback) {
-        return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate, redisProperties), errorConditionalCallback);
+    public IdempotentAspect getIdempotentAspect(Collection collection, ErrorConditionalCallback errorConditionalCallback) {
+        return new IdempotentAspect(new CouchbaseIdempotentRepository(couchbaseConfig, collection), errorConditionalCallback);
     }
 
     @Bean
-    public IdempotentAspect getIdempotentAspect(RedisTemplate redisTemplate) {
-        return new IdempotentAspect(new RedisIdempotentRepository(redisTemplate, redisProperties));
+    public IdempotentAspect getIdempotentAspect(Collection collection) {
+        return new IdempotentAspect(new CouchbaseIdempotentRepository(couchbaseConfig, collection));
     }
 
 }

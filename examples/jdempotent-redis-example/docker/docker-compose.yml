@@ -9,7 +9,7 @@ services:
     image: 'bitnami/redis:latest'
     environment:
       - REDIS_REPLICATION_MODE=master
-      - REDIS_PASSWORD=str0ng_passw0rd
+      - REDIS_PASSWORD=jdempotent
     networks:
       - jdempotent-example
     ports:
@@ -19,8 +19,8 @@ services:
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis
-      - REDIS_MASTER_PASSWORD=str0ng_passw0rd
-      - REDIS_PASSWORD=str0ng_passw0rd
+      - REDIS_MASTER_PASSWORD=jdempotent
+      - REDIS_PASSWORD=jdempotent
     ports:
       - '6379'
     depends_on:
@@ -30,7 +30,7 @@ services:
   redis-sentinel:
     image: 'bitnami/redis-sentinel:latest'
     environment:
-      - REDIS_MASTER_PASSWORD=str0ng_passw0rd
+      - REDIS_MASTER_PASSWORD=jdempotent
     depends_on:
       - redis
       - redis-slave

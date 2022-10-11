@@ -1,7 +1,5 @@
 package com.trendyol.jdempotent.core.model;
 
-import org.springframework.util.comparator.Comparators;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;

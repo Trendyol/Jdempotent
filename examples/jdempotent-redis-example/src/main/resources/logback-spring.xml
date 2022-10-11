@@ -9,7 +9,7 @@
     <springProfile name="local,default">
         <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
         <logger name="com.trendyol.jdempotent.core" level="DEBUG"/>
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>

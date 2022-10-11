@@ -1,15 +1,15 @@
-package com.trendyol.jdempotent.redis;
+package com.trendyol.jdempotent.redis.configuration;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ConditionalOnProperty(
         prefix="jdempotent", name = "enable",

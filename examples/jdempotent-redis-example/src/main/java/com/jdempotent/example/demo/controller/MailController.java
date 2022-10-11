@@ -5,6 +5,8 @@ import com.jdempotent.example.demo.model.SendEmailRequest;
 import com.jdempotent.example.demo.model.SendEmailResponse;
 import com.jdempotent.example.demo.service.MailSenderService;
 import com.trendyol.jdempotent.core.annotation.JdempotentResource;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,11 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class MailController {
 
-    @Autowired
-    private MailSenderService mailSenderService;
-
-    private static final Logger logger = LoggerFactory.getLogger(MailController.class);
+    private final MailSenderService mailSenderService;
 
     @PostMapping("/send-email")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -38,7 +39,7 @@ public class MailController {
         try {
             mailSenderService.sendMail(request);
         } catch (MessagingException e) {
-            logger.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
         }
 
         return new SendEmailResponse("We will send your message");
@@ -58,7 +59,7 @@ public class MailController {
         try {
             mailSenderService.sendMail(request);
         } catch (Exception e) {
-            logger.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
         }
 
         return new SendEmailResponse("We will send your message");
@@ -77,7 +78,7 @@ public class MailController {
         try {
             mailSenderService.sendMail(request);
         } catch (Exception e) {
-            logger.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
         }
 
         return new SendEmailResponse("We will send your message");
@@ -97,7 +98,7 @@ public class MailController {
         try {
             mailSenderService.sendMail(request);
         } catch (MessagingException e) {
-            logger.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
         }
 
         return new SendEmailResponse("We will send your message");

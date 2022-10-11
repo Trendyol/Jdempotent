@@ -1,7 +1,12 @@
-package com.trendyol.jdempotent.couchbase;
+package com.trendyol.jdempotent.couchbase.configuration;
 
 import com.couchbase.client.core.deps.io.netty.channel.epoll.EpollEventLoopGroup;
-import com.couchbase.client.core.env.*;
+import com.couchbase.client.core.env.CompressionConfig;
+import com.couchbase.client.core.env.IoConfig;
+import com.couchbase.client.core.env.IoEnvironment;
+import com.couchbase.client.core.env.LoggerConfig;
+import com.couchbase.client.core.env.SecurityConfig;
+import com.couchbase.client.core.env.TimeoutConfig;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.ClusterOptions;
 import com.couchbase.client.java.Collection;

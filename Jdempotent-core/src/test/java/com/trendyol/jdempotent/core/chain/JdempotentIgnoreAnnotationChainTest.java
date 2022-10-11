@@ -1,8 +1,8 @@
 package com.trendyol.jdempotent.core.chain;
 
-import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
 import com.trendyol.jdempotent.core.model.ChainData;
 import com.trendyol.jdempotent.core.model.KeyValuePair;
+import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

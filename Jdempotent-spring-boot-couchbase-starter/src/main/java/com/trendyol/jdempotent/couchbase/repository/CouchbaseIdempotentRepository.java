@@ -1,4 +1,4 @@
-package com.trendyol.jdempotent.couchbase;
+package com.trendyol.jdempotent.couchbase.repository;
 
 import com.couchbase.client.java.Collection;
 import com.couchbase.client.java.kv.GetOptions;
@@ -9,6 +9,7 @@ import com.trendyol.jdempotent.core.model.IdempotencyKey;
 import com.trendyol.jdempotent.core.model.IdempotentRequestResponseWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
+import com.trendyol.jdempotent.couchbase.configuration.CouchbaseConfig;
 
 import java.time.Duration;
 import java.util.HashMap;

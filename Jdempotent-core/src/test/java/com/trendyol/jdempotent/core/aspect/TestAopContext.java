@@ -1,6 +1,5 @@
 package com.trendyol.jdempotent.core.aspect;
 
-import com.trendyol.jdempotent.core.aspect.IdempotentAspect;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import org.springframework.context.annotation.Bean;

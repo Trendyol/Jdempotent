@@ -1,4 +1,4 @@
-package com.trendyol.jdempotent.couchbase;
+package com.trendyol.jdempotent.couchbase.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

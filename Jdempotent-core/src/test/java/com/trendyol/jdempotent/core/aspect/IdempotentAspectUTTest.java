@@ -1,13 +1,13 @@
 package com.trendyol.jdempotent.core.aspect;
 
-import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
-import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import com.trendyol.jdempotent.core.model.IdempotencyKey;
 import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
+import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
+import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Test;

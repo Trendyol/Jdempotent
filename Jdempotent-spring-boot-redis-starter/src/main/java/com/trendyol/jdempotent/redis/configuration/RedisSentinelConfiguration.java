@@ -1,4 +1,4 @@
-package com.trendyol.jdempotent.redis;
+package com.trendyol.jdempotent.redis.configuration;
 
 
 import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;

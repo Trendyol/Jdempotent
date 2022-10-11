@@ -33,12 +33,12 @@ For Couchbase:
 </dependency>
 ```
 
-2. You should add `@IdempotentResource` annotation to the method that you want to make idempotent resource, listener etc.
+2. You should add `@JdempotentResource` annotation to the method that you want to make idempotent resource, listener etc.
 
 ```java
-@IdempotentResource(cachePrefix = "WelcomingListener")
+@JdempotentResource(cachePrefix = "WelcomingListener")
 @KafkaListener(topics = "trendyol.mail.welcome", groupId = "group_id")
-public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
+public void consumeMessage(@JdempotentRequestPayload String emailAdress) {
     SendEmailRequest request = SendEmailRequest.builder()
             .email(message)
             .subject(subject)
@@ -53,7 +53,29 @@ public void consumeMessage(@IdempotentRequestPayload String emailAdress) {
         throw new RetryIdempotentRequestException(e);
     }
 }
+
+@PostMapping("/send-email-header-body")
+@ResponseStatus(HttpStatus.ACCEPTED)
+@JdempotentResource(cachePrefix = "MailController.sendEmail")
+public SendEmailResponse sendEmailWithHeaderAndBody(
+        @JdempotentRequestPayload @RequestHeader("x-idempotency-key") String idempotencyKey,
+        @JdempotentRequestPayload @RequestBody SendEmailRequest request
+) {
+    if (StringUtils.isEmpty(request.getEmail())) {
+        throw new InvalidEmailAddressException();
+    }
+
+    try {
+        mailSenderService.sendMail(request);
+    } catch (Exception e) {
+        log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+    }
+
+    return new SendEmailResponse("We will send your message");
+}
 ```
+
+
 
 If want that idempotencyId in your payload. Put `@JdempotentId` annotation that places the generated idempotency identifier into annotated field.
 Can be thought of as @Id annotation in jpa.

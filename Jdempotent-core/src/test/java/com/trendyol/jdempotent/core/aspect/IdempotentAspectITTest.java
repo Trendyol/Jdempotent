@@ -1,8 +1,5 @@
 package com.trendyol.jdempotent.core.aspect;
 
-import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
-import com.trendyol.jdempotent.core.utils.TestException;
-import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
@@ -10,6 +7,9 @@ import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import com.trendyol.jdempotent.core.model.IdempotencyKey;
 import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
+import com.trendyol.jdempotent.core.utils.IdempotentTestPayload;
+import com.trendyol.jdempotent.core.utils.TestException;
+import com.trendyol.jdempotent.core.utils.TestIdempotentResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.aop.framework.AopProxyUtils;
@@ -21,7 +21,6 @@ import org.springframework.test.util.AopTestUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
