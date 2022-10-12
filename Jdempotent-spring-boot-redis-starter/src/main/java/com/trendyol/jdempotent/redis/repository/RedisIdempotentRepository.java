@@ -6,6 +6,7 @@ import com.trendyol.jdempotent.core.model.IdempotentRequestResponseWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
 import com.trendyol.jdempotent.redis.configuration.RedisConfigProperties;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -26,7 +27,7 @@ public class RedisIdempotentRepository implements IdempotentRepository {
     private final RedisConfigProperties redisProperties;
 
 
-    public RedisIdempotentRepository(RedisTemplate redisTemplate, RedisConfigProperties redisProperties) {
+    public RedisIdempotentRepository(@Qualifier("JdempotentRedisTemplate") RedisTemplate redisTemplate, RedisConfigProperties redisProperties) {
         valueOperations = redisTemplate.opsForValue();
         this.redisTemplate = redisTemplate;
         this.redisProperties = redisProperties;

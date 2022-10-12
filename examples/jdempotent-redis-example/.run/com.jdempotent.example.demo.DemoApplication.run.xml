@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="com.jdempotent.example.demo.DemoApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="com.jdempotent.example.demo.DemoApplication" />
+    <module name="demo" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.jdempotent.example.demo.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

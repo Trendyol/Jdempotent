@@ -44,7 +44,7 @@ public class RedisSentinelConfiguration {
                         .defaultConfiguration());
     }
 
-    @Bean
+    @Bean("JdempotentRedisTemplate")
     public RedisTemplate<String, IdempotentResponseWrapper> redisTemplate() {
         RedisTemplate<String, IdempotentResponseWrapper> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory());

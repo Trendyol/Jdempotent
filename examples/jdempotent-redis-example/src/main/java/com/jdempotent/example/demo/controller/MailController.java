@@ -40,6 +40,7 @@ public class MailController {
             mailSenderService.sendMail(request);
         } catch (MessagingException e) {
             log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            throw new RuntimeException();
         }
 
         return new SendEmailResponse("We will send your message");
@@ -60,6 +61,7 @@ public class MailController {
             mailSenderService.sendMail(request);
         } catch (Exception e) {
             log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            throw new RuntimeException();
         }
 
         return new SendEmailResponse("We will send your message");
@@ -76,12 +78,13 @@ public class MailController {
         }
 
         try {
+            log.info("sendEmailWithHeaderAndBody#idempotencyKey: " + request.getIdempotencyKey());
             mailSenderService.sendMail(request);
+            return new SendEmailResponse("We will send your message");
         } catch (Exception e) {
             log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            throw new RuntimeException();
         }
-
-        return new SendEmailResponse("We will send your message");
     }
 
     @PostMapping("v2/send-email")
@@ -99,6 +102,7 @@ public class MailController {
             mailSenderService.sendMail(request);
         } catch (MessagingException e) {
             log.debug("MailSenderService.sendEmail() throw exception: {} request: {} ", e, request);
+            throw new RuntimeException();
         }
 
         return new SendEmailResponse("We will send your message");

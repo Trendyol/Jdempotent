@@ -26,7 +26,7 @@ public class WelcomingListener {
     @Value("${template.welcoming.subject}")
     private String subject;
 
-    @KafkaListener(topics = "trendyol.mail.welcome", groupId = "group_id")
+    //@KafkaListener(topics = "trendyol.mail.welcome", groupId = "group_id")
     @JdempotentResource
     public void consumeMessage(String emailAdress) {
         SendEmailRequest request = SendEmailRequest.builder()

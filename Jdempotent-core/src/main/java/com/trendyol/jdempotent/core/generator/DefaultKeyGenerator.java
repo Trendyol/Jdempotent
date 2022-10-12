@@ -3,9 +3,9 @@ package com.trendyol.jdempotent.core.generator;
 import com.trendyol.jdempotent.core.constant.EnvironmentVariableUtils;
 import com.trendyol.jdempotent.core.model.IdempotencyKey;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.security.MessageDigest;
 
@@ -36,12 +36,12 @@ public class DefaultKeyGenerator implements KeyGenerator {
         messageDigest.update(requestObject.toString().getBytes());
         byte[] digest = messageDigest.digest();
 
-        if (!StringUtils.isEmpty(appName)) {
+        if (!StringUtils.isBlank(appName)) {
             builder.append(appName);
             builder.append("-");
         }
 
-        if (!StringUtils.isEmpty(listenerName)) {
+        if (!StringUtils.isBlank(listenerName)) {
             builder.append(listenerName);
             builder.append("-");
         }

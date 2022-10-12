@@ -20,13 +20,13 @@ import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
 import com.trendyol.jdempotent.core.model.KeyValuePair;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -254,17 +254,14 @@ public class IdempotentAspect {
      * @throws IllegalAccessException
      */
     public void setJdempotentId(Object[] args, String idempotencyKey) throws IllegalAccessException {
-        var wrapper = new IdempotentIgnorableWrapper();
-        Field[] declaredFields = args[0].getClass().getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            if (declaredField.getDeclaredAnnotations().length == 0) {
-                wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args[0]));
-            } else {
-                for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
-                    if (annotation instanceof JdempotentId) {
-                        wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args[0]));
-                        declaredField.set(args[0], idempotencyKey);
+        for (Object arg: args) {
+            if (!isTypePrimitive(arg)) {
+                for (Field declaredField : arg.getClass().getDeclaredFields()) {
+                    declaredField.setAccessible(true);
+                    for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
+                        if (annotation instanceof JdempotentId) {
+                            declaredField.set(arg, idempotencyKey);
+                        }
                     }
                 }
             }
@@ -275,13 +272,13 @@ public class IdempotentAspect {
         var wrapper = new IdempotentIgnorableWrapper();
         for (Object arg: args) {
             Field[] declaredFields = arg.getClass().getDeclaredFields();
-            if(arg instanceof String){
+            if(isTypePrimitive(arg)){
                 wrapper.getNonIgnoredFields().put(arg.toString(), arg);
             } else {
                 for (Field declaredField : declaredFields) {
                     declaredField.setAccessible(true);
                     KeyValuePair keyValuePair = annotationChain.process(new ChainData(declaredField, arg));
-                    if (!StringUtils.isEmpty(keyValuePair.getKey())) {
+                    if (!StringUtils.isBlank(keyValuePair.getKey())) {
                         wrapper.getNonIgnoredFields().put(keyValuePair.getKey(), keyValuePair.getValue());
                     }
                 }
@@ -316,5 +313,11 @@ public class IdempotentAspect {
         jdempotentIgnoreAnnotationChain.next(jdempotentPropertyAnnotationChain);
         jdempotentPropertyAnnotationChain.next(jdempotentDefaultChain);
         return jdempotentIgnoreAnnotationChain;
+    }
+
+    private boolean isTypePrimitive(Object arg){
+        if(arg instanceof CharSequence) return true;
+        if(arg instanceof Boolean) return true;
+        return arg instanceof Number;
     }
 }
