@@ -1,7 +1,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.trendyol.jdempotent.redis.ApplicationConfig,\
-com.trendyol.jdempotent.redis.RedisConfigProperties,\
-com.trendyol.jdempotent.redis.RedisSentinelConfiguration,\
+com.trendyol.jdempotent.redis.configuration.ApplicationConfig,\
+com.trendyol.jdempotent.redis.configuration.RedisConfigProperties,\
+com.trendyol.jdempotent.redis.configuration.RedisSentinelConfiguration,\
 org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
 org.springframework.boot.env.EnvironmentPostProcessor=\
-com.trendyol.jdempotent.redis.RedisEnvironmentPostProcessor
+com.trendyol.jdempotent.redis.configuration.RedisEnvironmentPostProcessor

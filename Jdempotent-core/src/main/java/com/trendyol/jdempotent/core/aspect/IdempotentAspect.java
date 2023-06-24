@@ -1,26 +1,40 @@
 package com.trendyol.jdempotent.core.aspect;
 
-import com.trendyol.jdempotent.core.annotation.*;
+import com.trendyol.jdempotent.core.annotation.JdempotentId;
+import com.trendyol.jdempotent.core.annotation.JdempotentRequestPayload;
+import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import com.trendyol.jdempotent.core.callback.ErrorConditionalCallback;
-import com.trendyol.jdempotent.core.chain.*;
+import com.trendyol.jdempotent.core.chain.AnnotationChain;
+import com.trendyol.jdempotent.core.chain.JdempotentDefaultChain;
+import com.trendyol.jdempotent.core.chain.JdempotentIgnoreAnnotationChain;
+import com.trendyol.jdempotent.core.chain.JdempotentNoAnnotationChain;
+import com.trendyol.jdempotent.core.chain.JdempotentPropertyAnnotationChain;
 import com.trendyol.jdempotent.core.constant.CryptographyAlgorithm;
 import com.trendyol.jdempotent.core.datasource.IdempotentRepository;
 import com.trendyol.jdempotent.core.datasource.InMemoryIdempotentRepository;
 import com.trendyol.jdempotent.core.generator.DefaultKeyGenerator;
 import com.trendyol.jdempotent.core.generator.KeyGenerator;
-import com.trendyol.jdempotent.core.model.*;
+import com.trendyol.jdempotent.core.model.ChainData;
+import com.trendyol.jdempotent.core.model.IdempotencyKey;
+import com.trendyol.jdempotent.core.model.IdempotentIgnorableWrapper;
+import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
+import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
+import com.trendyol.jdempotent.core.model.KeyValuePair;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -206,7 +220,7 @@ public class IdempotentAspect {
         if (args.length == 0) {
             throw new IllegalStateException("Idempotent method not found");
         } else if (args.length == 1) {
-            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args[0]));
+            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(Collections.singletonList(args[0])));
         } else {
             try {
                 MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -214,12 +228,16 @@ public class IdempotentAspect {
                 Class<?>[] parameterTypes = signature.getMethod().getParameterTypes();
                 var method = pjp.getTarget().getClass().getMethod(methodName, parameterTypes);
                 Annotation[][] annotations = method.getParameterAnnotations();
+                List<Object> payloads = new ArrayList<>();
                 for (int i = 0; i < args.length; i++) {
                     for (Annotation annotation : annotations[i]) {
                         if (annotation instanceof JdempotentRequestPayload) {
-                            return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(args[i]));
+                            payloads.add(args[i]);
                         }
                     }
+                }
+                if(!payloads.isEmpty()) {
+                    return new IdempotentRequestWrapper(getIdempotentNonIgnorableWrapper(payloads));
                 }
             } catch (NoSuchMethodException | SecurityException e) {
                 throw new IllegalStateException("Idempotent method not found", e);
@@ -236,36 +254,34 @@ public class IdempotentAspect {
      * @throws IllegalAccessException
      */
     public void setJdempotentId(Object[] args, String idempotencyKey) throws IllegalAccessException {
-        var wrapper = new IdempotentIgnorableWrapper();
-        Field[] declaredFields = args[0].getClass().getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            if (declaredField.getDeclaredAnnotations().length == 0) {
-                wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args[0]));
-            } else {
-                for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
-                    if (annotation instanceof JdempotentId) {
-                        wrapper.getNonIgnoredFields().put(declaredField.getName(), declaredField.get(args[0]));
-                        declaredField.set(args[0], idempotencyKey);
+        for (Object arg: args) {
+            if (!isTypePrimitive(arg)) {
+                for (Field declaredField : arg.getClass().getDeclaredFields()) {
+                    declaredField.setAccessible(true);
+                    for (Annotation annotation : declaredField.getDeclaredAnnotations()) {
+                        if (annotation instanceof JdempotentId) {
+                            declaredField.set(arg, idempotencyKey);
+                        }
                     }
                 }
             }
         }
     }
 
-    public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(Object args) throws IllegalAccessException {
+    public IdempotentIgnorableWrapper getIdempotentNonIgnorableWrapper(List<Object> args) throws IllegalAccessException {
         var wrapper = new IdempotentIgnorableWrapper();
-        Field[] declaredFields = args.getClass().getDeclaredFields();
-        if(args instanceof String){
-            wrapper.getNonIgnoredFields().put(args.toString(), args);
-            return wrapper;
-        }
-
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            KeyValuePair keyValuePair = annotationChain.process(new ChainData(declaredField,args));
-            if (!StringUtils.isEmpty(keyValuePair.getKey())){
-                wrapper.getNonIgnoredFields().put(keyValuePair.getKey(), keyValuePair.getValue());
+        for (Object arg: args) {
+            Field[] declaredFields = arg.getClass().getDeclaredFields();
+            if(isTypePrimitive(arg)){
+                wrapper.getNonIgnoredFields().put(arg.toString(), arg);
+            } else {
+                for (Field declaredField : declaredFields) {
+                    declaredField.setAccessible(true);
+                    KeyValuePair keyValuePair = annotationChain.process(new ChainData(declaredField, arg));
+                    if (!StringUtils.isBlank(keyValuePair.getKey())) {
+                        wrapper.getNonIgnoredFields().put(keyValuePair.getKey(), keyValuePair.getValue());
+                    }
+                }
             }
         }
         return wrapper;
@@ -297,5 +313,11 @@ public class IdempotentAspect {
         jdempotentIgnoreAnnotationChain.next(jdempotentPropertyAnnotationChain);
         jdempotentPropertyAnnotationChain.next(jdempotentDefaultChain);
         return jdempotentIgnoreAnnotationChain;
+    }
+
+    private boolean isTypePrimitive(Object arg){
+        if(arg instanceof CharSequence) return true;
+        if(arg instanceof Boolean) return true;
+        return arg instanceof Number;
     }
 }

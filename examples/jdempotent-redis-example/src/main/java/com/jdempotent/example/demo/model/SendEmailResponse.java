@@ -12,5 +12,8 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor
 public class SendEmailResponse implements Serializable {
+
+    private static final long serialVersionUID = 7930732926638008763L;
+
     private String message;
 }

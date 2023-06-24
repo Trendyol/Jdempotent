@@ -1,6 +1,8 @@
 HELP.md
 /Jdempotent-core/target/
 /Jdempotent-spring-boot-redis-starter/target/
+/Jdempotent-spring-boot-couchbase-starter/target/
+/Jdempotent-Coverage/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**

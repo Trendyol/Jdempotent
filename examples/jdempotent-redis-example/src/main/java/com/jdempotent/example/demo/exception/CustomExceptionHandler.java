@@ -15,6 +15,7 @@ import java.util.List;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<?> handleAllExceptions(Exception ex, WebRequest request) {
+        ex.printStackTrace();
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Server Error", details);

@@ -12,6 +12,9 @@ import java.io.Serializable;
 @Builder
 @ToString
 public class SendEmailRequest implements Serializable {
+
+    private static final long serialVersionUID = 7930732926638008763L;
+
     private String email;
     private String subject;
     private String message;
