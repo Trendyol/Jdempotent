@@ -35,7 +35,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
+        <spring.boot.version>2.5.15</spring.boot.version>
         <spring.framework.version>5.2.9.RELEASE</spring.framework.version>
         <version.mockito>1.10.19</version.mockito>
         <version.junit>4.13.1</version.junit>
