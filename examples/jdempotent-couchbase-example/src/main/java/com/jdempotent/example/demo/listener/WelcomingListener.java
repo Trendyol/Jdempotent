@@ -1,6 +1,6 @@
 package com.jdempotent.example.demo.listener;
 
-import com.trendyol.jdempotent.core.annotation.IdempotentResource;
+import com.trendyol.jdempotent.core.annotation.JdempotentResource;
 import com.jdempotent.example.demo.exception.RetryIdempotentRequestException;
 import com.jdempotent.example.demo.model.SendEmailRequest;
 import com.jdempotent.example.demo.service.MailSenderService;
@@ -27,7 +27,7 @@ public class WelcomingListener {
     private String subject;
 
     @KafkaListener(topics = "trendyol.mail.welcome", groupId = "group_id")
-    @IdempotentResource
+    @JdempotentResource
     public void consumeMessage(String emailAdress) {
         SendEmailRequest request = SendEmailRequest.builder()
                 .email(message)

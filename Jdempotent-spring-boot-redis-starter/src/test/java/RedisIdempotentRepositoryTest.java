@@ -2,8 +2,8 @@ import com.trendyol.jdempotent.core.model.IdempotencyKey;
 import com.trendyol.jdempotent.core.model.IdempotentRequestResponseWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentRequestWrapper;
 import com.trendyol.jdempotent.core.model.IdempotentResponseWrapper;
-import com.trendyol.jdempotent.redis.RedisConfigProperties;
-import com.trendyol.jdempotent.redis.RedisIdempotentRepository;
+import com.trendyol.jdempotent.redis.configuration.RedisConfigProperties;
+import com.trendyol.jdempotent.redis.repository.RedisIdempotentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,18 +15,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class RedisIdempotentRepositoryTest {
@@ -119,7 +114,7 @@ public class RedisIdempotentRepositoryTest {
         var argumentCaptor = ArgumentCaptor.forClass(IdempotentRequestResponseWrapper.class);
         verify(valueOperations).set(eq(key.getKeyValue()), argumentCaptor.capture(), eq(1L), eq(TimeUnit.HOURS));
         IdempotentRequestResponseWrapper value = argumentCaptor.getValue();
-        assertEquals(value.getRequest().getRequest(), 123L);
+        assertEquals(value.getRequest().getRequest(), Collections.singletonList(123L));
     }
 
     @Test
@@ -167,7 +162,7 @@ public class RedisIdempotentRepositoryTest {
         var argumentCaptor = ArgumentCaptor.forClass(IdempotentRequestResponseWrapper.class);
         verify(valueOperations).set(eq(key.getKeyValue()), argumentCaptor.capture(), eq(1L), eq(TimeUnit.HOURS));
         IdempotentRequestResponseWrapper value = argumentCaptor.getValue();
-        assertEquals(value.getRequest().getRequest(), 123L);
+        assertEquals(value.getRequest().getRequest(), Collections.singletonList(123L));
         assertEquals(value.getResponse().getResponse(), "response");
         assertEquals(wrapper.getResponse().getResponse(), "response");
     }

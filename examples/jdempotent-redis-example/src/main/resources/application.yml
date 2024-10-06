@@ -5,27 +5,28 @@ jdempotent:
   cache:
     redis:
       database: 9
-      password: "pass"
+      password: "jdempotent"
       sentinelHostList: localhost
-      sentinelPort: 26379
-      sentinelMasterName: "master"
+      sentinelPort: "26379"
+      sentinelMasterName: "jdempotent"
       expirationTimeHour: 2
       dialTimeoutSecond: 3
       readTimeoutSecond: 3
       writeTimeoutSecond: 3
       maxRetryCount: 3
       expireTimeoutHour: 84
+      persistReqRes: true
 
 email:
   from:
-    address: XXXXXXX
+    address: XXXXXXXXXXXX
 
 spring:
   mail:
-    host: smtp.gmail.com
+    host: XXXXXXXXXXXX
     port: 587
-    username: XXXXXXX
-    password: XXXXXXX
+    username: XXXXXXXXXXXX
+    password: XXXXXXXXXXXX
     properties.mail.smtp:
       auth: true
       starttls.enable: true
