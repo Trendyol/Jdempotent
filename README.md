@@ -1,3 +1,5 @@
+
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Trendyol/Jdempotent/badge)](https://scorecard.dev/viewer/?uri=github.com/Trendyol/Jdempotent)
 # Jdempotent
 
 [![Release Jdempotent](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml/badge.svg)](https://github.com/Trendyol/Jdempotent/actions/workflows/jdempotent-spring-boot-redis-starter.yml)
