@@ -52,17 +52,17 @@
             <dependency>
                 <groupId>de.siegmar</groupId>
                 <artifactId>logback-gelf</artifactId>
-                <version>1.1.0</version>
+                <version>6.1.1</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>${spring.framework.version}</version>
+                <version>6.1.20</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aspects</artifactId>
-                <version>${spring.framework.version}</version>
+                <version>5.2.9.RELEASE</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
@@ -73,12 +73,12 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-redis</artifactId>
-                <version>2.2.5.RELEASE</version>
+                <version>3.0.8</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>3.3.12</version>
                 <optional>true</optional>
             </dependency>
 
@@ -86,13 +86,13 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>${version.junit}</version>
+                <version>4.13.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
-                <version>2.3.4.RELEASE</version>
+                <version>3.0.8</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>
@@ -104,7 +104,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
-                <version>${version.mockito}</version>
+                <version>5.8.0</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
