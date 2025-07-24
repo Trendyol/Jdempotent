@@ -1,0 +1,21 @@
+jdempotent:
+  enable: true
+  cryptography:
+    algorithm: AES # <- BU PROPERTY'Yİ UNUTMA! Kodda kullanılıyor
+  cassandra:
+    enable: true
+    contactPoints:
+      - "127.0.0.1"  # Cassandra node IP'si
+    port: 9042
+    localDatacenter: "dc1"
+    keyspace: "jdempotent"
+
+server:
+  port: 8080
+
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.cassandra.CassandraReactiveDataAutoConfiguration

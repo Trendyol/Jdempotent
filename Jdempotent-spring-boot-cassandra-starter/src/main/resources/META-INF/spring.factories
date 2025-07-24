@@ -1,0 +1,7 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.trendyol.jdempotent.cassandra.CassandraConfigProperties,\
+com.trendyol.jdempotent.cassandra.CassandraConfiguration,\
+org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration
+
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.trendyol.jdempotent.cassandra.CassandraEnvironmentPostProcessor
