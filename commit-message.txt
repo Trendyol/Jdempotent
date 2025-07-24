@@ -1,0 +1,20 @@
+feat(cassandra): add Cassandra-based IdempotentRepository implementation
+
+- Implemented a custom IdempotentRepository backed by Cassandra for Jdempotent core
+- Fully compatible with the IdempotentRequestWrapper and IdempotentResponseWrapper models
+- Supports TTL-based persistence via CQL statements (insert with USING TTL)
+- Handles response retrieval and safe duplicate request detection
+- Covers core idempotency operations: contains, store, remove, setResponse, getResponse
+- Used CassandraTemplate and CqlOperations to support both entity-level and CQL-based ops
+
+Test Coverage:
+- Added unit tests mocking CassandraTemplate and CqlOperations using Mockito
+- Covered all edge cases for presence/absence of keys, TTL logic, and response handling
+
+Motivation:
+This extension enables scalable and persistent idempotency handling in distributed systems
+using Cassandra — especially useful for high-throughput, eventual-consistency environments.
+
+Author: Dogukan Demirci  
+GitHub: https://github.com/AI-SoftwareArchitect  
+LinkedIn: https://www.linkedin.com/in/do%C4%9Fukan-d-a57159304/

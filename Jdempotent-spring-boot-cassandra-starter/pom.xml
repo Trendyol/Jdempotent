@@ -10,9 +10,21 @@
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Jdempotent-spring-boot-cassandra-starter</name>
-  <description>Jdempotent Cassandra Starter</description>
-  <url>https://github.com/cargo/Jdempotent-cassandra-starter</url>
+  <name>jdempotent-cassandra-extension</name>
+  <description>Custom Cassandra Idempotent Repository for Jdempotent</description>
+  <url>https://github.com/AI-SoftwareArchitect/Jdempotent</url>
+
+  <developers>
+    <developer>
+      <id>dogukandemirci</id>
+      <name>Dogukan Demirci</name>
+      <email>dogukandemircix647@gmail.com</email> <!-- opsiyonel -->
+      <url>https://github.com/AI-SoftwareArchitect</url>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
